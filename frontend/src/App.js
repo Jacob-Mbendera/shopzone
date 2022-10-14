@@ -13,7 +13,7 @@ function App() {
           <Link to="/">ShopZone</Link>
         </header>
 
-        <main>
+        <main> 
           <Routes>
             <Route path='/product/:slug' element={ <ProductScreen />} /> 
             <Route path='/' element ={ <HomeScreen />} />
