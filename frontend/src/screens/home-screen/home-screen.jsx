@@ -2,26 +2,80 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-// import data from '../../data/data'; 
+// import data from '../../data/data';
 import axios from 'axios';
+import { useReducer } from "react";
+import logger from 'use-reducer-logger';
 
-const HomeScreen  = ()=>{
-const [products, setProducts ] =useState([]);
 
-useEffect(()=> {
-  const fetchData = async() =>{
-      const res = await axios.get('/api/products');
-      setProducts(res.data);
+const reducer = (state, action)=>{
+
+  switch(action.type){
+
+    case 'FETCH_REQUEST':
+      return{
+        ...state,
+        loading: true,
+      };
+
+      case 'FETCH_SUCCESS':
+      return {
+        ...state,
+        products: action.payload,
+        loading:false,
+      };
+
+      case 'FETCH_FAIL':
+        return{
+          ...state,
+          error: action.payload,
+          loading: false,
+        }
+
+        default: 
+          return state;
   }
 
-  fetchData();
-},[])
+}
+
+const HomeScreen  = ()=>{
+
+  // const [products, setProducts ] = useState([]);
+
+  const [{products, loading, error}, dispatch ] = useReducer(logger(reducer), {products: [], loading: true, error: ''})
+
+  useEffect( ()=>{
+
+    const fetchData = async ()=>{
+      dispatch({type: 'FETCH_REQUEST'});
+      try {
+        const results = await axios.get('/api/products');
+        // setProducts(results.data);
+        dispatch({type: 'FETCH_SUCCESS', payload: results.data})
+        
+      } catch (error) {
+        dispatch({type: 'FETCH_FAIL', payload: error.message})
+      }
+     
+    }
+
+    fetchData();
+
+  },[])
 
     return (
         <div> 
             <h1>Featured Products</h1>
           <div className="products">
             {
+            loading ? (
+              <div> LOADING.... </div>
+                )    :
+            error? (
+                <div> {error} </div>
+            ) : 
+
+            (
             products.map((product) => (
               <div className="product " key={product.slug}>
                 <Link to={`/product/${product.slug}`}>
@@ -41,7 +95,7 @@ useEffect(()=> {
               </div>
             ))
             
-            }
+            )}
           </div>
           
       </div>
