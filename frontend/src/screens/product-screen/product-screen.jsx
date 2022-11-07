@@ -11,6 +11,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Card from 'react-bootstrap/Card';
 import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/esm/Button';
+import {Helmet} from 'react-helmet-async';
 
 const reducer = (state, action)=>{
 
@@ -81,6 +82,9 @@ switch(action.type){
         <Col md={3}>
           <ListGroup variant="flush">
               <ListGroup.Item>
+                <Helmet>
+                  <title>{product.name}</title>
+                </Helmet>
                   <h1>{product.name}</h1>
               </ListGroup.Item>
 
