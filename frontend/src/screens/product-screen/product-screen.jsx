@@ -1,13 +1,144 @@
-import React from 'react'
+import './product-screen.scss';
+import { useReducer } from 'react';
+import axios from 'axios';
+import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 
- function ProductScreen() {
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Rating from '../../components/rating/rating.component';
+import ListGroup from 'react-bootstrap/ListGroup';
+import Card from 'react-bootstrap/Card';
+import Badge from 'react-bootstrap/Badge';
+import Button from 'react-bootstrap/esm/Button';
+
+const reducer = (state, action)=>{
+
+switch(action.type){
+
+  case 'FETCH_REQUEST':
+    return{
+      ...state,
+      loading: true,
+    };
+
+    case 'FETCH_SUCCESS':
+    return {
+      ...state,
+      product: action.payload,
+      loading:false,
+    };
+
+    case 'FETCH_FAIL':
+      return{
+        ...state,
+        error: action.payload,
+        loading: false,
+      }
+
+      default: 
+        return state;
+}
+
+}
+
+
+ const  ProductScreen = () => {
     const params  = useParams();
     const {slug} = params;
 
+    const [{product, loading, error}, dispatch ] = useReducer(reducer, {product: [], loading: true, error: ''})
+
+  useEffect( ()=>{
+
+    const fetchData = async ()=>{
+      dispatch({type: 'FETCH_REQUEST'});
+      try {
+        const results = await axios.get(`/api/products/slug/${slug}`);
+        // setProducts(results.data);
+        dispatch({type: 'FETCH_SUCCESS', payload: results.data})
+        
+      } catch (error) {
+        dispatch({type: 'FETCH_FAIL', payload: error.message})
+      }
+     
+    }
+
+    fetchData();
+
+  },[slug])
+
   return (
-    <div>
-      <h1>{slug}</h1>
+    loading ? <div> Loading.... </div>
+    : error ? <di> {error} </di>
+    : <div>
+      <Row>
+
+        <Col md={6}>
+            <img className='image-large' src={product.image} alt={product.name}/> 
+        </Col>
+
+        <Col md={3}>
+          <ListGroup variant="flush">
+              <ListGroup.Item>
+                  <h1>{product.name}</h1>
+              </ListGroup.Item>
+
+              <ListGroup.Item>
+                  <Rating rating={product.rating} numReviews={product.numReviews} > </Rating>
+              </ListGroup.Item>
+
+              <ListGroup.Item>
+                  Price: $ {product.price}
+              </ListGroup.Item>
+
+              <ListGroup.Item>
+                  Description: <p> {product.description} </p>
+              </ListGroup.Item>
+          </ListGroup>
+        </Col>
+
+        <Col md={3}>
+            <Card>
+              <Card.Body>
+              <ListGroup variant="flush">
+
+              <ListGroup.Item>
+                  <Row>
+                    <Col>Price: </Col>
+                    <Col>${product.price}</Col>
+                  </Row>
+              </ListGroup.Item>
+
+              <ListGroup.Item>
+                  <Row>
+                    <Col>Status: </Col>
+                    <Col>
+                      { 
+                        product.countInStock > 0  ?  
+                          <Badge bg="success"> Available</Badge>
+                        : 
+                          <Badge bg="danger"> Out of Stock</Badge>
+                      }
+                    </Col>
+                  </Row>
+              </ListGroup.Item>
+
+
+            { product.countInStock > 0 && ( 
+              <ListGroup.Item>
+                <div className="d-grid">
+                  <Button>Add to Cart </Button>
+                </div>
+            </ListGroup.Item>)
+            
+            }
+
+          </ListGroup>
+              </Card.Body>
+            </Card>
+        </Col>
+      </Row> 
     </div>
   )
 }

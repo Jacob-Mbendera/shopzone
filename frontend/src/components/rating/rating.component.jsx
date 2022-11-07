@@ -35,7 +35,7 @@ const Rating = (props) =>{
             : "far fa-star"} />
         </span>
 
-    <span>{numReviews} Reviews</span>
+    <span>{numReviews} Review</span>
     </div>
   )
 }

@@ -23,7 +23,7 @@ function App() {
         </header>
 
         <main> 
-          <Container className='d-flex flex-column site-container'>
+          <Container className='d-flex flex-column site-container mt-3'>
             <Routes>
               <Route path='/product/:slug' element={ <ProductScreen />} /> 
               <Route path='/' element ={ <HomeScreen />} />
