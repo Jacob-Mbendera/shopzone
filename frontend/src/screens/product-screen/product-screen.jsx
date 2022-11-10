@@ -14,6 +14,7 @@ import Button from 'react-bootstrap/esm/Button';
 import {Helmet} from 'react-helmet-async';
 import LoadingBox from '../../components/loading-box/loading-box.component';
 import MessageBox from '../../components/message-box/message-box.component';
+import { getError } from '../../utils/errors.utils';
 
 const reducer = (state, action)=>{
 
@@ -62,7 +63,7 @@ switch(action.type){
         dispatch({type: 'FETCH_SUCCESS', payload: results.data})
         
       } catch (error) {
-        dispatch({type: 'FETCH_FAIL', payload: error.message})
+        dispatch({type: 'FETCH_FAIL', payload: getError(error)})
       }
      
     }
