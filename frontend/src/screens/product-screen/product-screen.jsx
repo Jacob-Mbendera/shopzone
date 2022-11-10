@@ -1,4 +1,4 @@
-// import './product-screen.scss';
+import './product-screen.scss';
 import { useReducer } from 'react';
 import axios from 'axios';
 import React, { useEffect } from 'react'
@@ -12,6 +12,8 @@ import Card from 'react-bootstrap/Card';
 import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/esm/Button';
 import {Helmet} from 'react-helmet-async';
+import LoadingBox from '../../components/loading-box/loading-box.component';
+import MessageBox from '../../components/message-box/message-box.component';
 
 const reducer = (state, action)=>{
 
@@ -70,14 +72,13 @@ switch(action.type){
   },[slug]) //Slug as a depedency, when the slug changes then fetchData()will dispatch.
 
   return loading ? ( 
-      <div> Loading.... </div>
-    ) : error ? (<div> {error} </div>
+      <LoadingBox />
+    ) : error ? (<MessageBox variant ="danger" >{error} </MessageBox>
     ) : ( <div>
       <Row>
 
         <Col md={6}>
-            <img className='img-large' src={product.image} alt={product.name}   > 
-            </img> 
+            <img className='img-large' src={product.image} alt={product.name}   /> 
         </Col>
 
         <Col md={3}>
