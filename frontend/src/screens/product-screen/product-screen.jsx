@@ -1,4 +1,4 @@
-import './product-screen.scss';
+// import './product-screen.scss';
 import { useReducer } from 'react';
 import axios from 'axios';
 import React, { useEffect } from 'react'
@@ -44,7 +44,7 @@ switch(action.type){
 }
 
 
- const  ProductScreen = () => {
+ function ProductScreen () {
     const params  = useParams();
     const {slug} = params;
 
@@ -67,16 +67,17 @@ switch(action.type){
 
     fetchData();
 
-  },[slug])
+  },[slug]) //Slug as a depedency, when the slug changes then fetchData()will dispatch.
 
-  return (
-    loading ? <div> Loading.... </div>
-    : error ? <di> {error} </di>
-    : <div>
+  return loading ? ( 
+      <div> Loading.... </div>
+    ) : error ? (<div> {error} </div>
+    ) : ( <div>
       <Row>
 
         <Col md={6}>
-            <img className='image-large' src={product.image} alt={product.name}/> 
+            <img className='img-large' src={product.image} alt={product.name}   > 
+            </img> 
         </Col>
 
         <Col md={3}>
@@ -144,7 +145,7 @@ switch(action.type){
         </Col>
       </Row> 
     </div>
-  )
+  );
 }
 
 export default ProductScreen;
