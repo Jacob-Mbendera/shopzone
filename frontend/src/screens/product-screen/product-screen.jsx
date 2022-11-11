@@ -15,6 +15,8 @@ import {Helmet} from 'react-helmet-async';
 import LoadingBox from '../../components/loading-box/loading-box.component';
 import MessageBox from '../../components/message-box/message-box.component';
 import { getError } from '../../utils/errors.utils';
+import { useContext } from 'react';
+import { Store } from '../../context/store.context';
 
 const reducer = (state, action)=>{
 
@@ -47,11 +49,22 @@ switch(action.type){
 }
 
 
+
+
+
+
  function ProductScreen () {
     const params  = useParams();
     const {slug} = params;
 
+    
     const [{product, loading, error}, dispatch ] = useReducer(reducer, {product: [], loading: true, error: ''})
+
+    const {state, dispatch: ctxDispatch } = useContext(Store);
+    const adddToCartHandler = ()=>{
+      ctxDispatch({ type: 'ADD_CART_ITEM', payload: {...product, quantity: 1} })
+    
+    }
 
   useEffect( ()=>{
 
@@ -63,7 +76,7 @@ switch(action.type){
         dispatch({type: 'FETCH_SUCCESS', payload: results.data})
         
       } catch (error) {
-        dispatch({type: 'FETCH_FAIL', payload: getError(error)})
+        dispatch({type: 'FETCH_FAIL', payload: getError(error)}) 
       }
      
     }
@@ -135,7 +148,7 @@ switch(action.type){
             { product.countInStock > 0 && ( 
               <ListGroup.Item>
                 <div className="d-grid">
-                  <Button>Add to Cart </Button>
+                  <Button onClick={adddToCartHandler}>Add to Cart </Button>
                 </div>
             </ListGroup.Item>)
             
