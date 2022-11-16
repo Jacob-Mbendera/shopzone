@@ -14,17 +14,18 @@ const reducer = (state, action)=>{
     switch(action.type){
         case 'ADD_CART_ITEM':
             //add to cart
-            return{
-                ...state,  //return prev state 
-                cart: {
-                    ...state.cart, //return prev state of the cart
+            const newCartItem = action.payload;
+            const existCartItem = state.cart.cartItems.find( (item) => 
+                item._id === newCartItem._id);
 
-                    cartItems: [
-                        ...state.cart.cartItems, //return the prev state of cartItems[]
-                        action.payload, //add the new item
-                    ]
-                }
-            };
+                const cartItems =  existCartItem ? state.cart.cartItems.map( (item) => item._id ===  existCartItem._id ? newCartItem : item) : [...state.cart.cartItems, newCartItem]
+                //if we already have the item in the cart, we need to use map() function on cartItems to UPDATE the current item(existCartItem) with the new item(newCartItem)
+                //if existCartItem is null it means its new item so we need to add it to the end of the Array hence [...state.cart.cartItems, newCartItem]
+
+
+                return{ ...state,
+                    cart: {...state.cart, cartItems} //cartItems we just updated above.
+                };
 
         default:
             return state;

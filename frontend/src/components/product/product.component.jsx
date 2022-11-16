@@ -1,3 +1,4 @@
+import './product.styles.scss';
 import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
@@ -18,8 +19,8 @@ const Product = (props) => {
                 <Card.Title> {product.name}</Card.Title>
             </Link>
             <Rating rating={product.rating} numReviews={product.numReviews} />
-            <Card.Text>{product.price}</Card.Text>
-            <Button>Add to Cart</Button>
+            <Card.Text>${product.price}</Card.Text>
+            <Button className='cart-button'>Add to Cart</Button>
         </Card.Body> 
     </Card>
     )

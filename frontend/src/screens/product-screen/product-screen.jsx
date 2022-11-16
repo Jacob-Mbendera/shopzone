@@ -1,4 +1,4 @@
-import './product-screen.scss';
+import './product-screen.styles.scss';
 import { useReducer } from 'react';
 import axios from 'axios';
 import React, { useEffect } from 'react'
@@ -60,12 +60,6 @@ switch(action.type){
     
     const [{product, loading, error}, dispatch ] = useReducer(reducer, {product: [], loading: true, error: ''})
 
-    const {state, dispatch: ctxDispatch } = useContext(Store);
-    const adddToCartHandler = ()=>{
-      ctxDispatch({ type: 'ADD_CART_ITEM', payload: {...product, quantity: 1} })
-    
-    }
-
   useEffect( ()=>{
 
     const fetchData = async ()=>{
@@ -84,6 +78,25 @@ switch(action.type){
     fetchData();
 
   },[slug]) //Slug as a depedency, when the slug changes then fetchData()will dispatch.
+
+
+  const {state, dispatch: ctxDispatch } = useContext(Store);
+    const {cart} = state;
+
+    const adddToCartHandler = async ()=>{
+
+      const existingCartItem = cart.cartItems.find((x) => x._id === product._id);
+      const quantity  = existingCartItem ? existingCartItem.quantity + 1 : 1; //if exists, increase quantity by 1 else set quantity to 1
+      const {data} = await axios.get(`/api/products/${product._id}`);
+
+      if(data.countInStock < quantity){
+        window.alert('Sorry, Product is out of stock');
+        return;
+      }
+
+      ctxDispatch({ type: 'ADD_CART_ITEM', payload: {...product, quantity}})
+    
+    }
 
   return loading ? ( 
       <LoadingBox />
@@ -148,7 +161,7 @@ switch(action.type){
             { product.countInStock > 0 && ( 
               <ListGroup.Item>
                 <div className="d-grid">
-                  <Button onClick={adddToCartHandler}>Add to Cart </Button>
+                  <Button onClick={adddToCartHandler} className='cart-button'>Add to Cart </Button>
                 </div>
             </ListGroup.Item>)
             
