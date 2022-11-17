@@ -2,7 +2,7 @@ import './product-screen.styles.scss';
 import { useReducer } from 'react';
 import axios from 'axios';
 import React, { useEffect } from 'react'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -56,9 +56,10 @@ switch(action.type){
  function ProductScreen () {
     const params  = useParams();
     const {slug} = params;
-
     
     const [{product, loading, error}, dispatch ] = useReducer(reducer, {product: [], loading: true, error: ''})
+
+    const navigate = useNavigate();
 
   useEffect( ()=>{
 
@@ -95,6 +96,8 @@ switch(action.type){
       }
 
       ctxDispatch({ type: 'ADD_CART_ITEM', payload: {...product, quantity}})
+
+      navigate('/cart');
     
     }
 
