@@ -12,6 +12,7 @@ import Nav from 'react-bootstrap/Nav';
 import { useContext } from 'react';
 import { Store } from './context/store.context';
 import CartScreen from './screens/cart-screen/cart.screen';
+import SigninScreen from './screens/signin-screen/signin-screen';
 
 function App() {
 
@@ -50,6 +51,7 @@ function App() {
               <Route path='/product/:slug' element={ <ProductScreen />} /> 
               <Route path='/' element ={ <HomeScreen />} />
               <Route path='/cart' element={<CartScreen />} />
+              <Route path='/signin' element={<SigninScreen />} />
             </Routes> 
           </Container>
         </main>

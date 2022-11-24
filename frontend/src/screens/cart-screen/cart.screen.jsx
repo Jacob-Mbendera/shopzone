@@ -35,7 +35,7 @@ const removeCartItem = (item) =>{
 }
 
 const goToCheckHandler = () =>{
-    navigate('/signIn?redirect=/shipping');
+    navigate('/signin?redirect=/shipping');
 }
     return(
         <div>
