@@ -84,7 +84,7 @@ switch(action.type){
   const {state, dispatch: ctxDispatch } = useContext(Store);
     const {cart} = state;
 
-    const adddToCartHandler = async ()=>{
+    const addToCartHandler = async ()=>{
 
       const existingCartItem = cart.cartItems.find((x) => x._id === product._id);
       const quantity  = existingCartItem ? existingCartItem.quantity + 1 : 1; //if exists, increase quantity by 1 else set quantity to 1
@@ -98,7 +98,7 @@ switch(action.type){
       ctxDispatch({ type: 'ADD_CART_ITEM', payload: {...product, quantity}})
 
       navigate('/cart');
-    
+     
     }
 
   return loading ? ( 
@@ -164,7 +164,7 @@ switch(action.type){
             { product.countInStock > 0 && ( 
               <ListGroup.Item>
                 <div className="d-grid">
-                  <Button onClick={adddToCartHandler} className='cart-button'>Add to Cart </Button>
+                  <Button onClick={addToCartHandler} className='cart-button'>Add to Cart </Button>
                 </div>
             </ListGroup.Item>)
             

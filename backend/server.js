@@ -2,6 +2,8 @@ import express from 'express';
 import data from './data/data.js';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import seedRouter from './routes/seed.routes.js';
+import productRouter from './routes/products.routes.js';
 
 dotenv.config();
 
@@ -15,10 +17,18 @@ mongoose.connect(process.env.MONGODB_URI).then( () =>{
 
 const app = express();
 
+app.use('/api/seed', seedRouter)
+
+
+
+/*
 app.get('/api/products', (req,res) =>{
     res.send(data.products);
-});
+}); */
 
+app.use('/api/products', productRouter);
+
+/*
 app.get('/api/products/slug/:slug', (req,res) =>{
     const product =  data.products.find((x) => x.slug === req.params.slug);
 
@@ -28,7 +38,11 @@ app.get('/api/products/slug/:slug', (req,res) =>{
         res.status(404).send({ message:'Product now found' });
     }
 });
+*/
 
+app.use('/api/products/slug/:slug', productRouter);
+
+/*
 app.get('/api/products/:id', (req,res) =>{
     const product =  data.products.find((x) => x._id === req.params.id);
 
@@ -37,7 +51,9 @@ app.get('/api/products/:id', (req,res) =>{
     } else{
         res.status(404).send({ message:'Product now found' });
     }
-});
+}); 
+*/
+app.use('/api/products/:id', productRouter);
 
 const port = process.env.PORT || 5001;
 

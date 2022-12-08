@@ -1,7 +1,9 @@
 const Data = {
   products: [
     {
-      _id: '1',
+
+      //commented id when started seeding it to MongoDB because id field wil be generated automatically
+      // _id: '1',
       name: 'Nike Slim shirt',
       slug: 'nike-slim-shirt',
       category: 'Shirts',
@@ -14,7 +16,7 @@ const Data = {
       description: 'high quality shirt',
     },
     {
-      _id: '2',
+      // _id: '2',
       name: 'Adidas Fit Shirt',
       slug: 'adidas-fit-shirt',
       category: 'Shirts',
@@ -27,7 +29,7 @@ const Data = {
       description: 'high quality product',
     },
     {
-      _id: '3',
+      // _id: '3',
       name: 'Nike Slim Pant',
       slug: 'nike-slim-pant',
       category: 'Pants',
@@ -40,7 +42,7 @@ const Data = {
       description: 'high quality product',
     },
     {
-      _id: '4',
+      // _id: '4',
       name: 'Adidas Fit Pant',
       slug: 'adidas-fit-pant',
       category: 'Pants',
@@ -53,5 +55,7 @@ const Data = {
       description: 'high quality product',
     },
   ],
+
+  
 };
 export default Data;
