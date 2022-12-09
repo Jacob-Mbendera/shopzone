@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import seedRouter from './routes/seed.routes.js';
 import productRouter from './routes/products.routes.js';
-import userRouter from './routes/user.routes.js';
+import userRouter from './routes/users.routes.js';
 
 dotenv.config();
 
@@ -18,7 +18,7 @@ mongoose.connect(process.env.MONGODB_URI).then( () =>{
 
 const app = express();
 
-app.use('/api/seed', seedRouter)
+app.use('/api/seed/', seedRouter)
 
 
 
