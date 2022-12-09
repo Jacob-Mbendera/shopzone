@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import seedRouter from './routes/seed.routes.js';
 import productRouter from './routes/products.routes.js';
+import userRouter from './routes/user.routes.js';
 
 dotenv.config();
 
@@ -54,6 +55,9 @@ app.get('/api/products/:id', (req,res) =>{
 }); 
 */
 app.use('/api/products/:id', productRouter);
+
+//seeding users
+app.use('/api/users/', userRouter);
 
 const port = process.env.PORT || 5001;
 
