@@ -18,45 +18,15 @@ mongoose.connect(process.env.MONGODB_URI).then( () =>{
 
 const app = express();
 
+//the data in POST Request will be converted to a JSON object in record body
+app.use(express.json());
+app.use(express.urlencoded({extended: true}))
+
+//APIs
 app.use('/api/seed/', seedRouter)
-
-
-
-/*
-app.get('/api/products', (req,res) =>{
-    res.send(data.products);
-}); */
-
 app.use('/api/products', productRouter);
-
-/*
-app.get('/api/products/slug/:slug', (req,res) =>{
-    const product =  data.products.find((x) => x.slug === req.params.slug);
-
-    if(product){
-        res.send(product);
-    } else{
-        res.status(404).send({ message:'Product now found' });
-    }
-});
-*/
-
 app.use('/api/products/slug/:slug', productRouter);
-
-/*
-app.get('/api/products/:id', (req,res) =>{
-    const product =  data.products.find((x) => x._id === req.params.id);
-
-    if(product){
-        res.send(product);
-    } else{
-        res.status(404).send({ message:'Product now found' });
-    }
-}); 
-*/
 app.use('/api/products/:id', productRouter);
-
-//seeding users
 app.use('/api/users/', userRouter);
 
 const port = process.env.PORT || 5001;
