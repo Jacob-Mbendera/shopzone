@@ -29,6 +29,12 @@ app.use('/api/products/slug/:slug', productRouter);
 app.use('/api/products/:id', productRouter);
 app.use('/api/users/', userRouter);
 
+
+//error handler for express
+app.use((err, req, res, next) =>{
+    res.status(500).send({message: err.message});
+})
+
 const port = process.env.PORT || 5001;
 
 app.listen(port, () =>{

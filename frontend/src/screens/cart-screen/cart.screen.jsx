@@ -34,8 +34,8 @@ const removeCartItem = (item) =>{
     ctxDispatch({ type: 'REMOVE_CART_ITEM', payload: item})
 }
 
-const goToCheckHandler = () =>{
-    navigate('/signin?redirect=/shipping');
+const goToCheckoutHandler = () =>{
+    navigate('/signin?redirect=/shipping'); //redirect to signin first then shipping
 }
     return(
         <div>
@@ -106,7 +106,7 @@ const goToCheckHandler = () =>{
                                     <div className='d-grid'>
                                         <Button 
                                         className='cart-button' 
-                                        onClick={() => goToCheckHandler()}
+                                        onClick={() => goToCheckoutHandler()}
                                         disabled={cartItems.length === 0} >
                                             Go to Checkout
                                         </Button>

@@ -68,7 +68,7 @@ switch(action.type){
       try {
         const results = await axios.get(`/api/products/slug/${slug}`);
         // setProducts(results.data);
-        dispatch({type: 'FETCH_SUCCESS', payload: results.data})
+        dispatch({type: 'FETCH_SUCCESS', payload: results.data});
         
       } catch (error) {
         dispatch({type: 'FETCH_FAIL', payload: getError(error)}) 
