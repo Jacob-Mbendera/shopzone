@@ -1,4 +1,4 @@
-import './product-screen.styles.scss';
+import './product-screen.styles.css';
 import { useReducer } from 'react';
 import axios from 'axios';
 import React, { useEffect } from 'react'

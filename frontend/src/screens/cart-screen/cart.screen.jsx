@@ -1,4 +1,4 @@
-import './cart-screen.styles.scss';
+import './cart-screen.styles.css';
 import { useContext } from 'react';
 import { Store } from '../../context/store.context';
 import {Helmet} from 'react-helmet-async';
