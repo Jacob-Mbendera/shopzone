@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import seedRouter from './routes/seed.routes.js';
 import productRouter from './routes/products.routes.js';
 import userRouter from './routes/users.routes.js';
+import morgan from 'morgan';
 
 dotenv.config();
 
@@ -20,7 +21,8 @@ const app = express();
 
 //the data in POST Request will be converted to a JSON object in record body
 app.use(express.json());
-app.use(express.urlencoded({extended: true}))
+app.use(express.urlencoded({extended: true}));
+app.use(morgan("dev"))
 
 //APIs
 app.use('/api/seed/', seedRouter)
