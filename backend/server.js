@@ -33,6 +33,7 @@ app.use('/api/users/', userRouter);
 
 
 //error handler for express
+//works a middleware
 app.use((err, req, res, next) =>{
     res.status(500).send({message: err.message});
 })

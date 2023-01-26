@@ -33,3 +33,7 @@ main {
   width: 100%;
   max-width: 400px;
 }
+
+.small-container {
+  max-width: 600px;
+}

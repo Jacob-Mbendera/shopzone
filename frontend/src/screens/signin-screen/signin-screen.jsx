@@ -1,4 +1,4 @@
-import './signin-screen.styles.css';
+import './signin-screen.styles.scss';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -32,6 +32,7 @@ const SigninScreen = () => {
         try{
             //ajax request to backback for an API we created /api/users/signin/
             const {data} = await Axios.post('/api/users/signin', { email, password});
+            //if the data is correct we save the data in the local storage adn redict user to correct URL
             ctxDispatch({ type: "SIGN_IN_USER", payload: data });
             localStorage.setItem("userInfo", JSON.stringify(data));
             navigate(redirect || '/');
@@ -68,7 +69,7 @@ const SigninScreen = () => {
                 </Form.Group>
 
                 <div className="mb-3">
-                    <Button type="submit">Sign In</Button>
+                    <Button type="submit" variant='dark'>Sign In</Button>
                 </div>
 
                 <div className="mb-3">

@@ -16,6 +16,7 @@ import SigninScreen from './screens/signin-screen/signin-screen';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ShippingScreen from './screens/shipping-screen/shipping.screen';
 
 function App() {
 
@@ -24,8 +25,9 @@ function App() {
 
 const signoutHandler = () =>{
   try{
-    ctxDispatch({ type: "SIGN_OUT" })
-    localStorage.removeItem('userInfo')
+    ctxDispatch({ type: "SIGN_OUT" });
+    localStorage.removeItem('userInfo');
+    localStorage.removeItem('shippingAddress');
   } catch(err){
     
   }
@@ -88,6 +90,7 @@ const signoutHandler = () =>{
               <Route path='/' element ={ <HomeScreen />} />
               <Route path='/cart' element={<CartScreen />} />
               <Route path='/signin' element={<SigninScreen />} />
+              <Route path='/shipping' element={<ShippingScreen />} />
             </Routes> 
           </Container>
         </main>

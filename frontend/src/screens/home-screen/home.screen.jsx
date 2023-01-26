@@ -46,8 +46,6 @@ const reducer = (state, action)=>{
 
 const HomeScreen  = ()=>{
 
-  // const [products, setProducts ] = useState([]);
-
   const [{products, loading, error}, dispatch ] = useReducer(logger(reducer), {products: [], loading: true, error: ''})
 
   useEffect( ()=>{
