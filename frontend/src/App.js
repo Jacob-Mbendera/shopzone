@@ -17,6 +17,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ShippingScreen from './screens/shipping-screen/shipping.screen';
+import SignupScreen from './screens/signup-screen/signup-screen';
 
 function App() {
 
@@ -90,6 +91,7 @@ const signoutHandler = () =>{
               <Route path='/' element ={ <HomeScreen />} />
               <Route path='/cart' element={<CartScreen />} />
               <Route path='/signin' element={<SigninScreen />} />
+              <Route path='/signup' element={<SignupScreen />} />
               <Route path='/shipping' element={<ShippingScreen />} />
             </Routes> 
           </Container>
