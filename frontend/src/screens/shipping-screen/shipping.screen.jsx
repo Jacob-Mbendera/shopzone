@@ -53,9 +53,8 @@ import CheckoutSteps from '../../components/checkout-steps/checkout-steps.compon
 
      useEffect(()=>{
         if(!userInfo){
-            
             // ctxDispatch({type:'SIGN_OUT'});
-            navigate('/sign');
+            navigate('/signin');
         }
 
      }, [navigate,userInfo])

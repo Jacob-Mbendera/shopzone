@@ -18,6 +18,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ShippingScreen from './screens/shipping-screen/shipping.screen';
 import SignupScreen from './screens/signup-screen/signup-screen';
+import PaymentMethod from './screens/payment-method/payment-method';
 
 function App() {
 
@@ -29,6 +30,7 @@ const signoutHandler = () =>{
     ctxDispatch({ type: "SIGN_OUT" });
     localStorage.removeItem('userInfo');
     localStorage.removeItem('shippingAddress');
+    localStorage.removeItem('paymentMethod');
   } catch(err){
     
   }
@@ -93,6 +95,7 @@ const signoutHandler = () =>{
               <Route path='/signin' element={<SigninScreen />} />
               <Route path='/signup' element={<SignupScreen />} />
               <Route path='/shipping' element={<ShippingScreen />} />
+              <Route path='/payment' element={<PaymentMethod />} />
             </Routes> 
           </Container>
         </main>
