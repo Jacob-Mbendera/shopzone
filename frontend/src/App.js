@@ -1,6 +1,4 @@
-import logo from './logo.svg';
 import './App.css';
-
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import HomeScreen from './screens/home-screen/home.screen';
 import ProductScreen from './screens/product-screen/product.screen';
@@ -19,6 +17,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import ShippingScreen from './screens/shipping-screen/shipping.screen';
 import SignupScreen from './screens/signup-screen/signup-screen';
 import PaymentMethod from './screens/payment-method/payment-method';
+import OrderPreview from './screens/order-preview/order-preview';
 
 function App() {
 
@@ -96,6 +95,7 @@ const signoutHandler = () =>{
               <Route path='/signup' element={<SignupScreen />} />
               <Route path='/shipping' element={<ShippingScreen />} />
               <Route path='/payment' element={<PaymentMethod />} />
+              <Route path='orderpreview' element={<OrderPreview />} />
             </Routes> 
           </Container>
         </main>

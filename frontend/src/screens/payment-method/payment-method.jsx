@@ -1,6 +1,5 @@
 import './payment-method.styles.scss';
 import React, { useState } from 'react'
-import Row from 'react-bootstrap/esm/Row';
 import CheckoutSteps from '../../components/checkout-steps/checkout-steps.component';
 import  Form  from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -34,7 +33,7 @@ const PaymentMethod = () => {
     const submitHandler = (e)=>{
         e.preventDefault();
         ctxDispatch({type:'SAVE_PAYMENT_METHOD', payload: paymentMethodName});
-        navigate('/placeorder');
+        navigate('/orderpreview');
 
     }
 
