@@ -34,7 +34,7 @@ const  reducer = (state, action) =>{
 
 const  OrderPreview = ()=> {
 
-  const[{loading, error,}, dispatch] = useReducer(reducer,{ loading: false, error: ''})
+  const[{loading}, dispatch] = useReducer(reducer,{ loading: false, error: ''})
 
   const{ state, dispatch: ctxDispatch } = useContext(Store);
   const { 
@@ -73,12 +73,11 @@ const  OrderPreview = ()=> {
           headers:{ authorization: `Bearer ${userInfo.token}`}
         }
         );
-
-        console.log(data);
+        
         ctxDispatch({type: 'CLEAR_CART'});
         dispatch({type: 'CREATE_SUCCESS'}); 
         localStorage.removeItem('cartItems');
-        // navigate(`/order/${data.order._id}`)
+        navigate(`/order/${data.order._id}`);  
         
       } catch (err) {
         dispatch({type: 'CREATE_FAIL'});
