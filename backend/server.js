@@ -6,6 +6,7 @@ import seedRouter from './routes/seed.routes.js';
 import productRouter from './routes/products.routes.js';
 import userRouter from './routes/users.routes.js';
 import morgan from 'morgan';
+import orderRouter from './routes/order.routes.js';
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ app.use('/api/products', productRouter);
 app.use('/api/products/slug/:slug', productRouter);
 app.use('/api/products/:id', productRouter);
 app.use('/api/users/', userRouter);
+app.use('/api/orders', orderRouter);
 
 
 //error handler for express
