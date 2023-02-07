@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useReducer } from 'react'
 import { Helmet } from 'react-helmet-async';
 import CheckoutSteps from '../../components/checkout-steps/checkout-steps.component';
 import Row from 'react-bootstrap/Row';
@@ -8,8 +8,34 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import { Store } from '../../context/store.context';
 import Button from 'react-bootstrap/esm/Button';
 import { Link, useNavigate } from 'react-router-dom';
+import {toast} from 'react-toastify';
+import { getError } from '../../utils/errors.utils';
+import axios from 'axios';
+import LoadingBox from '../../components/loading-box/loading-box.component'
+
+
+const  reducer = (state, action) =>{
+
+  switch(action.type){
+
+    case 'CREATE_REQUEST':
+      return{...state, loading: true}
+
+    case 'CREATE_SUCCESS':
+      return{...state, loading: false}
+
+    case 'CREATE_FAIL':
+      return{...state, loading: false}
+
+    default:
+      return state
+  }
+}
 
 const  OrderPreview = ()=> {
+
+  const[{loading, error,}, dispatch] = useReducer(reducer,{ loading: false, error: ''})
+
   const{ state, dispatch: ctxDispatch } = useContext(Store);
   const { 
     cart:{
@@ -26,8 +52,39 @@ const  OrderPreview = ()=> {
     const taxPrice = round2(0.16 * itemsPrice);
     const  totalPrice = itemsPrice + shippingPrice + taxPrice;
 
-    const placeOrderHandler = ()=>{
+    const placeOrderHandler = async()=>{
 
+     
+      try {
+        dispatch({type: 'CREATE_REQUEST'})
+        const { data } =  await axios.post('/api/orders/',
+        {
+          orderItems:cartItems,
+          shippingAddress:shippingAddress,
+          paymentMethod: paymentMethod,
+          itemsPrice:itemsPrice,
+          shippingPrice:shippingPrice,
+          taxPrice:taxPrice,
+          totalPrice: totalPrice,
+        },
+
+        //authenticating the API
+        {
+          headers:{ authorization: `Bearer ${userInfo.token}`}
+        }
+        );
+
+        console.log(data);
+        ctxDispatch({type: 'CLEAR_CART'});
+        dispatch({type: 'CREATE_SUCCESS'}); 
+        localStorage.removeItem('cartItems');
+        // navigate(`/order/${data.order._id}`)
+        
+      } catch (err) {
+        dispatch({type: 'CREATE_FAIL'});
+        toast.error(getError(err));
+        
+      }
     }
 
     useEffect(()=>{
@@ -141,6 +198,7 @@ const  OrderPreview = ()=> {
                           <div className='d-grid'>
                             <Button type='butotn' variant='dark' onClick={placeOrderHandler} disabled={cartItems.length === 0}>Place Order</Button>
                           </div>
+                          {loading && <LoadingBox></LoadingBox> }
                         </ListGroup.Item>
                     </ListGroup>
                   </Card.Body>

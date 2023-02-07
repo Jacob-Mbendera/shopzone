@@ -31,7 +31,7 @@ app.use('/api/products', productRouter);
 app.use('/api/products/slug/:slug', productRouter);
 app.use('/api/products/:id', productRouter);
 app.use('/api/users/', userRouter);
-app.use('/api/orders', orderRouter);
+app.use('/api/orders/', orderRouter);
 
 
 //error handler for express
