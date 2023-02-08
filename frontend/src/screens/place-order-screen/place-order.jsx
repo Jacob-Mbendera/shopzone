@@ -32,7 +32,7 @@ const  reducer = (state, action) =>{
   }
 }
 
-const  OrderPreview = ()=> {
+const  PlaceOrder = ()=> {
 
   const[{loading}, dispatch] = useReducer(reducer,{ loading: false, error: ''})
 
@@ -87,7 +87,6 @@ const  OrderPreview = ()=> {
     }
 
     useEffect(()=>{
-      console.log(taxPrice)
       if(!paymentMethod){
         navigate('/shipping')
       }
@@ -117,7 +116,7 @@ const  OrderPreview = ()=> {
                         <Link to='/shipping' variant='link'>Edit</Link>
                   </Card.Body>
               </Card>
-              <Card>
+              <Card className='mb-3'>
                   <Card.Body>
                   <Card.Title>Payment</Card.Title>
                         <Card.Text>
@@ -209,4 +208,4 @@ const  OrderPreview = ()=> {
   )
 }
 
-export default OrderPreview;
+export default PlaceOrder;

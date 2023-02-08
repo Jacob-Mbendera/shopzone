@@ -17,7 +17,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import ShippingScreen from './screens/shipping-screen/shipping.screen';
 import SignupScreen from './screens/signup-screen/signup-screen';
 import PaymentMethod from './screens/payment-method/payment-method';
-import OrderPreview from './screens/order-preview/order-preview';
+import PlaceOrder from './screens/place-order-screen/place-order';
+import Order from './screens/order-screen/order-screen';
 
 function App() {
 
@@ -95,7 +96,8 @@ const signoutHandler = () =>{
               <Route path='/signup' element={<SignupScreen />} />
               <Route path='/shipping' element={<ShippingScreen />} />
               <Route path='/payment' element={<PaymentMethod />} />
-              <Route path='orderpreview' element={<OrderPreview />} />
+              <Route path='/placeorder' element={<PlaceOrder />} />
+              <Route path='/order/:id' element={<Order />} />
             </Routes> 
           </Container>
         </main>

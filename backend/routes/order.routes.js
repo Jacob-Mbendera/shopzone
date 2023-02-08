@@ -2,9 +2,20 @@ import express from 'express';
 import expresssyncHandler from 'express-async-handler';
 import { isAuth } from '../utils.js';
 import Order from '../models/order.models.js'
+import expressAsyncHandler from 'express-async-handler';
 
 
 const orderRouter = express.Router();
+
+orderRouter.get("/:id", isAuth, expressAsyncHandler(async(req,res)=>{
+   const order = await Order.findById(req.params.id);
+
+   if(order){
+      res.send(order)
+   } else{
+      res.status(404).send({message: "Order with that id not found"});
+   }
+}))
 
 orderRouter.post("/", isAuth, expresssyncHandler( async(req, res)=>{
     
