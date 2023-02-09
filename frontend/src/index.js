@@ -6,6 +6,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {HelmetProvider} from 'react-helmet-async';
 import { StoreProvider } from './context/store.context';
+import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -13,7 +14,9 @@ root.render(
 
     <StoreProvider>
       <HelmetProvider>
-        <App />
+         <PayPalScriptProvider deferLoading={true}> {/* set deferLoading to true; we dont want to load Paypay at the beggining */}
+           <App />
+        </PayPalScriptProvider>
       </HelmetProvider>
     </StoreProvider>
 

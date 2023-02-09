@@ -11,6 +11,9 @@ import { Store } from '../../context/store.context';
 import LoadingBox from '../../components/loading-box/loading-box.component';
 import { Link } from 'react-router-dom';
 import MessageBox from '../../components/message-box/message-box.component';
+import {PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
+import { toast } from 'react-toastify';
+
 const reducer = (state, action)=>{
     switch(action.type){
 
@@ -30,7 +33,29 @@ const reducer = (state, action)=>{
                 ...state, 
                 error: action.payload,
                 loading: false}
-        
+
+                //
+        case 'PAY_REQUEST':
+            return{...state, loadingPay: true}
+
+        case 'PAY_SUCCESS':
+            return{
+                ...state, 
+                loadingPay: false,
+                successPay: true,
+            }
+
+        case 'PAY_FAIL':
+            return{
+                ...state, 
+                loadingPay: false}
+        case 'PAY_RESET':
+            return{
+                ...state, 
+                loadingPay: false,
+                successPay: false
+            }
+
         default:
             return state;
     }
@@ -43,9 +68,10 @@ const Order = ()=> {
     const {
         userInfo
     } = state;
-    const [{loading, error, order},dispatch] = useReducer(reducer,{order:{}, loading: true, error:''});
+    const [{loading, error, order, loadingPay, successPay},dispatch] = useReducer(reducer,{order:{}, loading: true, error:'', loadingPay:false, successPay: false});
     const navigate = useNavigate();
 
+    const[{isPending}, paypalDispatch] = usePayPalScriptReducer();
     useEffect(()=>{
         const fetchData = async()=>{
         try{
@@ -55,21 +81,65 @@ const Order = ()=> {
             });
             dispatch({type:'ORDER_FETCH_SUCCESS', payload: data }); //passing data from backend to the reducer
             // console.log(data)
-        } catch(err){
-            dispatch({type:'ORDER_FETCH_FAIL', payload: getError(err)});
-        }
+            } catch(err){
+                dispatch({type:'ORDER_FETCH_FAIL', payload: getError(err)});
+            }
+
         }
 
         if(!userInfo){
             return navigate('/signin');
         }
 
-        if(!order._id || (order._id && order._id !== orderId )){
+        if(!order._id || successPay || (order._id && order._id !== orderId )){
             fetchData();
-        }
 
-        console.log(order);
-    }, [order, userInfo, orderId, navigate]);
+            if(successPay){
+                dispatch({type: 'PAY_RESET'})
+            }
+        } else{
+            const loadPaypalScript = async()=>{
+                const { data: clientId } = await axios.get('/api/keys/paypal',{
+                    headers: {authorization: `Bearer ${userInfo.token}`}
+                });
+
+                paypalDispatch({type: 'resetOptions', value:{'client-id': clientId, currency: 'USD'}});
+                paypalDispatch({type: 'setLoadingStatus', value: 'pending'})
+            }
+
+            loadPaypalScript();
+        }
+        
+    }, [order, userInfo, orderId, navigate, paypalDispatch, successPay]);
+
+
+    //PAYPAL FUNCTIONS
+    const createOrder = (data, action)=>{
+        return action.order.create({
+            purchase_units:[
+                { 
+                    amount:{ value: order.totalPrice }
+                },
+            ],
+        }).then((orderId)=>{ return orderId}); //if order is successful return order id
+    }
+
+    //This function happens after a successful payment
+    const onApprove = (data, action)=>{
+        return action.order.capture().then(async (details)=>{
+            try{
+                dispatch({type: 'PAY_REQUEST'});
+                const { data } = await axios.put(`/api/orders/${order._id}/pay`, details,{ //details : details contain user info on the paypal side
+                    headers: {authorization: `Bearer ${userInfo.token}`}
+                });
+                dispatch({type: 'PAY_SUCCESS', payload: data})
+            } catch(err){
+                dispatch({type: 'PAY_FAIL', payload: getError(err)})
+                toast.error(getError(err));
+            }
+        })
+    }
+    const onError = err=> toast.error(getError(err));
 
   return loading ?(<LoadingBox> </LoadingBox>) 
   : error ? (<LoadingBox variant="danger">{error}</LoadingBox>) 
@@ -105,7 +175,7 @@ const Order = ()=> {
                         </Card.Text>
                         {
                             order.isPaid ? 
-                            (<MessageBox variant="success"> Order delivered at{order.paidAt}</MessageBox>) : 
+                            (<MessageBox variant="success"> Paid at {order.paidAt}</MessageBox>) : 
                             (<MessageBox variant="danger">Order not Paid</MessageBox>)
                         }
                     </Card.Body>
@@ -172,6 +242,18 @@ const Order = ()=> {
                           </Row>
                         </ListGroup.Item>
 
+                        {
+                            !order.isPaid &&(
+                                <ListGroup.Item>
+                                    {
+                                        isPending ? (<LoadingBox/>) : (<div>
+                                            <PayPalButtons createOrder={createOrder} onApprove={onApprove} onError={onError}></PayPalButtons>
+                                        </div>)
+                                    }
+                                </ListGroup.Item>
+                            )}
+
+                            {loadingPay &&(<LoadingBox></LoadingBox>)}
                         </ListGroup>
                     </Card.Body>
                 </Card>
