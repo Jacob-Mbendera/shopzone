@@ -32,7 +32,7 @@ const  reducer = (state, action) =>{
   }
 }
 
-const  PlaceOrder = ()=> {
+const  OrderReview = ()=> {
 
   const[{loading}, dispatch] = useReducer(reducer,{ loading: false, error: ''})
 
@@ -100,7 +100,6 @@ const  PlaceOrder = ()=> {
         <CheckoutSteps step1 step2 step3 step4 />
 
         <h1>Order Preview</h1>
-
 
         <Row>   
 
@@ -208,4 +207,4 @@ const  PlaceOrder = ()=> {
   )
 }
 
-export default PlaceOrder;
+export default OrderReview;

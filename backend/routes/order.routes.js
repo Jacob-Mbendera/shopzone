@@ -7,6 +7,15 @@ import expressAsyncHandler from 'express-async-handler';
 
 const orderRouter = express.Router();
 
+orderRouter.get("/", isAuth,expressAsyncHandler(async(req,res)=>{
+   const orders = await Order.find(); 
+      res.send(orders)
+}))
+
+orderRouter.get("/mine", isAuth, expressAsyncHandler(async(req,res)=>{
+   const orders = await Order.find({user: req.user._id}); //returns ALL the orders of a current use
+      res.send(orders)
+}))
 orderRouter.get("/:id", isAuth, expressAsyncHandler(async(req,res)=>{
    const order = await Order.findById(req.params.id);
 

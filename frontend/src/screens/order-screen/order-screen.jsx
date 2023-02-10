@@ -60,7 +60,7 @@ const reducer = (state, action)=>{
             return state;
     }
 }
-const Order = ()=> {
+const OrderScreen = ()=> {
     const params = useParams();
     const {id : orderId} = params;
 
@@ -187,7 +187,7 @@ const Order = ()=> {
                        
                         <ListGroup variant='flush'>
                             {order.orderItems.map((item)=>(
-                                <ListGroup.Item key={item.id}>
+                                <ListGroup.Item key={item._id}>
                                     <Row className='align-item-center'>
                                         <Col md={6}>
                                             <img src={item.image} className="img-fluid rounded img-thumbnail" alt={item.name}/> {''}
@@ -265,4 +265,4 @@ const Order = ()=> {
 }
 
 
-export default Order;
+export default OrderScreen;
