@@ -1,4 +1,4 @@
-import './signin-screen.styles.scss';
+import './signup-screen.styles.scss';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -12,15 +12,17 @@ import { useEffect } from 'react';
 import {toast} from 'react-toastify';
 import { getError } from '../../utils/errors.utils';
 
-const SigninScreen = () => {
+const SignupScreen = () => {
 
     //From cart.screen, navigate('/signin?redirect=/shipping'); //redirect to signin first then shipping
     const { search } = useLocation();
     const redirectUrl = new URLSearchParams(search).get('redirect');
     const redirect = redirectUrl ? redirectUrl : '/';
 
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [comfirmPassword, setComfirmPassword] = useState('');
 
     const{ state, dispatch: ctxDispatch} = useContext(Store);
     const {userInfo} = state;
@@ -29,11 +31,14 @@ const SigninScreen = () => {
     const submitHandler = async(e) =>{
         e.preventDefault();
 
+        if(password !== comfirmPassword){
+            toast.error("passwords do not match");
+            return
+        }
+
         try{
-            //ajax request to backback for an API we created /api/users/signin/
-            const {data} = await Axios.post('/api/users/signin', { email, password});
-            //if the data is correct we save the data in the local storage adn redict user to correct URL
-            ctxDispatch({ type: "SIGN_IN_USER", payload: data });
+            const { data } = await Axios.post('/api/users/signup', { name, email, password});
+            ctxDispatch({ type: 'SIGN_IN_USER', payload: data })
             localStorage.setItem("userInfo", JSON.stringify(data));
             navigate(redirect || '/');
 
@@ -53,10 +58,15 @@ const SigninScreen = () => {
         <Container className="small-container"> 
 
             <Helmet>
-                <title>Sign In</title>
+                <title>Sign Up</title>
             </Helmet>
 
             <Form onSubmit={submitHandler}>
+
+                <Form.Group className="mb-3" controlId="name">
+                    <Form.Label>name</Form.Label>
+                    <Form.Control type="name" required onChange={(e) => setName(e.target.value)} />
+                </Form.Group>
 
                 <Form.Group className="mb-3" controlId="email">
                     <Form.Label>Email</Form.Label>
@@ -68,13 +78,18 @@ const SigninScreen = () => {
                     <Form.Control type="password" required onChange={(e) => setPassword(e.target.value)} />
                 </Form.Group>
 
+                <Form.Group className="mb-3" controlId="comfirmPassword">
+                    <Form.Label>Comfirm Password</Form.Label>
+                    <Form.Control type="comfirmPassword" required onChange={(e) => setComfirmPassword(e.target.value)} />
+                </Form.Group>
+
                 <div className="mb-3">
-                    <Button type="submit" variant='dark'>Sign In</Button>
+                    <Button type="submit" variant='dark'>Sign Up</Button>
                 </div>
 
                 <div className="mb-3">
-                     New User ?
-                    <Link to={`/signup?redirect=${redirect}`}>Create account</Link>
+                     Already have an account?
+                    <Link to={`/signin?redirect=${redirect}`}>Sign-in</Link>
                 </div>
             </Form>
 
@@ -84,4 +99,4 @@ const SigninScreen = () => {
 }
 
 
-export default SigninScreen;
+export default SignupScreen;

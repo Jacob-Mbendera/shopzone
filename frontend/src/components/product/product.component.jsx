@@ -1,4 +1,4 @@
-import './product.styles.scss';
+import './product.styles.css';
 import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
@@ -44,7 +44,7 @@ const addToCartHandler =async (item) =>{
             <Card.Text>${product.price}</Card.Text>
             {
             product.countInStock === 0 ? 
-            <Button variant="light" disabled>Count of Stock</Button>:
+            <Button variant="light" disabled>Out of Stock</Button>:
             <Button className='cart-button' onClick={() => addToCartHandler(product)}>Add to Cart</Button>
              }
         </Card.Body> 

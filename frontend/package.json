@@ -4,6 +4,7 @@
   "proxy": "http://localhost:5001",
   "private": true,
   "dependencies": {
+    "@paypal/react-paypal-js": "^7.8.2",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -17,6 +18,7 @@
     "react-router-dom": "^6.4.2",
     "react-scripts": "5.0.1",
     "react-toastify": "^9.1.1",
+    "sass": "^1.57.1",
     "use-reducer-logger": "^1.0.2",
     "web-vitals": "^2.1.4"
   },

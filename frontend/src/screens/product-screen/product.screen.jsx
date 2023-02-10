@@ -1,4 +1,4 @@
-import './product-screen.styles.scss';
+import './product-screen.styles.css';
 import { useReducer } from 'react';
 import axios from 'axios';
 import React, { useEffect } from 'react'
@@ -81,7 +81,7 @@ switch(action.type){
   },[slug]) //Slug as a depedency, when the slug changes then fetchData()will dispatch.
 
 
-  const {state, dispatch: ctxDispatch } = useContext(Store);
+  const {state, dispatch: ctxDispatch } = useContext(Store); //dispatch: ctxDispatch, just to differenciate it from dispatch in useEffect above
     const {cart} = state;
 
     const addToCartHandler = async ()=>{
@@ -112,7 +112,7 @@ switch(action.type){
         </Col>
 
         <Col md={3}>
-          <ListGroup variant="flush">
+          <ListGroup variant="flush">  {/* flush removes borders around */}
               <ListGroup.Item>
                 <Helmet>
                   <title>{product.name}</title>
@@ -163,7 +163,7 @@ switch(action.type){
 
             { product.countInStock > 0 && ( 
               <ListGroup.Item>
-                <div className="d-grid">
+                <div className="d-grid"> {/* makes the button full width in that grid */}
                   <Button onClick={addToCartHandler} className='cart-button'>Add to Cart </Button>
                 </div>
             </ListGroup.Item>)

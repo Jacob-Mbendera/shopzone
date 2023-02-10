@@ -1,4 +1,4 @@
-import './cart-screen.styles.scss';
+import './cart-screen.styles.css';
 import { useContext } from 'react';
 import { Store } from '../../context/store.context';
 import {Helmet} from 'react-helmet-async';
@@ -14,6 +14,7 @@ import axios from 'axios';
 const CartScreen = () =>{
 
     const {state, dispatch: ctxDispatch} = useContext(Store);
+    //object destr 
     const { cart: { cartItems, } } = state;
     const navigate = useNavigate();
     
@@ -35,7 +36,7 @@ const removeCartItem = (item) =>{
 }
 
 const goToCheckoutHandler = () =>{
-    navigate('/signin?redirect=/shipping'); //redirect to signin first then shipping
+    navigate('/signin?redirect=/shipping'); // in the signin screen, we check for user authentication, if authemticated(signedin)  redirect user to shipping
 }
     return(
         <div>
