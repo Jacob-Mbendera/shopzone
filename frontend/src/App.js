@@ -20,6 +20,7 @@ import PaymentMethod from './screens/payment-method/payment-method';
 import OrderReview from './screens/order-review/order-review';
 import OrderScreen from './screens/order-screen/order-screen';
 import OrderHistory from './screens/order-history/order-history';
+import UserProfile from './screens/user-profile-screen/user-profile';
 
 function App() {
 
@@ -32,6 +33,7 @@ const signoutHandler = () =>{
     localStorage.removeItem('userInfo');
     localStorage.removeItem('shippingAddress');
     localStorage.removeItem('paymentMethod');
+    window.location.href=('/signin');
   } catch(err){
     
   }
@@ -101,6 +103,7 @@ const signoutHandler = () =>{
               <Route path='/order' element={<OrderReview />} />
               <Route path='/order/:id' element={<OrderScreen />} />
               <Route path='/orderhistory' element={<OrderHistory />} />
+              <Route path='/profile' element={<UserProfile/>} />
             </Routes> 
           </Container>
         </main>
