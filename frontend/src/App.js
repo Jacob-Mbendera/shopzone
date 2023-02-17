@@ -24,6 +24,7 @@ import UserProfile from './screens/user-profile-screen/user-profile';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import { getError } from './utils/errors.utils';
+import SearchBox from './components/search-box/search-box';
 
 function App() {
 
@@ -60,7 +61,7 @@ useEffect(()=>{
 },[])
 return (
     <BrowserRouter>
-      <div className={ sideBarIsOpen ? "d-flex flex-column site-container active-container" : "d-flex flex-column site-container"}>
+      <div className={   sideBarIsOpen ? "d-flex flex-column site-container active-container" : "d-flex flex-column site-container"}>
         <ToastContainer position="top-right" limit={1} />
         <header> 
           <Navbar bg="dark" variant="dark" expand="lg">
@@ -71,6 +72,7 @@ return (
               </LinkContainer>
                   <Navbar.Toggle aria-controls="basic-navbar-nav" />
                   <Navbar.Collapse id="basic-navbar-nav" >
+                    <SearchBox />
                   <Nav className="me-auto w-100 justify-content-end">
                   <Link to="cart" className='nav-link'>
                     Cart{
