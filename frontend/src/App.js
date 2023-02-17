@@ -60,7 +60,7 @@ useEffect(()=>{
 },[])
 return (
     <BrowserRouter>
-      <div className={sideBarIsOpen ? "d-flex flex-column site-container active-container" : "d-flex flex-column site-container"}>
+      <div className={ sideBarIsOpen ? "d-flex flex-column site-container active-container" : "d-flex flex-column site-container"}>
         <ToastContainer position="top-right" limit={1} />
         <header> 
           <Navbar bg="dark" variant="dark" expand="lg">
