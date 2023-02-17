@@ -6,9 +6,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-.site-container{
-  min-height: 100vh;
-}
+
 
 main {
   flex: 1;
@@ -36,4 +34,28 @@ main {
 
 .small-container {
   max-width: 600px;
+}
+
+/* side bar */
+.navbar-brand{
+  font-weight: bold;
+}
+.side-navbar{
+  width: 240px;
+  height: 100%;
+  position: absolute;
+  left: -300px;
+  background-color: black;
+  transition: 0.5s;
+}
+.site-container{
+  min-height: 100vh;
+  transition: 0.4s;
+}
+.active-container{
+  margin-left: 240px;
+}
+
+.active-nav{
+  left: 0;
 }
