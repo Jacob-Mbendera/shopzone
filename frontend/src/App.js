@@ -43,7 +43,7 @@ const signoutHandler = () =>{
     
   }
 }
-const [sideBarIsOpen,setSideBarIsOpen] = useState(true);
+const [sideBarIsOpen,setSideBarIsOpen] = useState(false);
 const [categories,setCategories] = useState([]);
 
 useEffect(()=>{

@@ -44,7 +44,7 @@ main {
   width: 240px;
   height: 100%;
   position: absolute;
-  left: -300px;
+   left: -300px; /*hidden by default */
   background-color: black;
   transition: 0.5s;
 }
@@ -57,5 +57,5 @@ main {
 }
 
 .active-nav{
-  left: 0;
+  left: 0; /*making the side bar actve(to show) */
 }
