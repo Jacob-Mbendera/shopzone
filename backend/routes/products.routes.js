@@ -24,7 +24,7 @@ productRouter.get('/search', expressAsyncHandler(async(req,res)=>{
         const order = query.order || '';
         const searchQuery = query.query || ''; //query string
 
-        //if query is not equal to 'all'; set searchQuery to the object or else set it to an empty o
+        //if query is not equal to 'all'; set searchQuery to the object or else set it to an empty object
         const queryFilter = searchQuery && searchQuery !== 'all' ? {
             name: {
                 $regex: searchQuery,

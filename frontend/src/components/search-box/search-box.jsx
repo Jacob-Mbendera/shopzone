@@ -12,7 +12,7 @@ const SearchBox = ()=> {
 
     const submitHandler = (e)=>{
         e.preventDefault();
-        navigate(query ? `/search/query=${query}` : '/search')
+        navigate(query ? `/search?=${query}` : '/search')
          
     }
   return (

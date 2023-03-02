@@ -12,6 +12,10 @@ main {
   flex: 1;
 }
 
+.text-bold{
+  font-weight: bold;
+}
+
 .products {
   display: flex;
   flex-wrap: wrap;

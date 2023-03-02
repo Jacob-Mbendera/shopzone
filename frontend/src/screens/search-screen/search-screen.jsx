@@ -81,13 +81,13 @@ const ratings = [
 
 const SearchScreen = ()=>{ const navigate = useNavigate();
     const { search } = useLocation();
-    const sp = new URLSearchParams(search); // /search?category=Shirts
-    const category = sp.get('category') || 'all';
-    const query = sp.get('query') || 'all';
-    const price = sp.get('price') || 'all';
-    const rating = sp.get('rating') || 'all';
-    const order = sp.get('order') || 'newest';
-    const page = sp.get('page') || 1;
+    const searchParam = new URLSearchParams(search); // /search?category=Shirts
+    const category = searchParam.get('category') || 'all';
+    const query = searchParam.get('query') || 'all';
+    const price = searchParam.get('price') || 'all';
+    const rating = searchParam.get('rating') || 'all';
+    const order = searchParam.get('order') || 'newest';
+    const page = searchParam.get('page') || 1;
   
     const [{ loading, error, products, pages, countProducts }, dispatch] =
       useReducer(reducer, {
@@ -140,14 +140,15 @@ const SearchScreen = ()=>{ const navigate = useNavigate();
           <title>Search Products</title>
         </Helmet>
         <Row>
+
           <Col md={3}>
             <h3>Department</h3>
             <div>
               <ul>
                 <li>
                   <Link
-                    className={'all' === category ? 'text-bold' : ''}
-                    to={getFilterUrl({ category: 'all' })}
+                    to={getFilterUrl({ category: 'all' })} //set category in queryString "all"
+                    className={'all' === category ? 'text-bold' : ''} //if categories === all make text bold
                   >
                     Any
                   </Link>
@@ -155,8 +156,8 @@ const SearchScreen = ()=>{ const navigate = useNavigate();
                 {categories.map((c) => (
                   <li key={c}>
                     <Link
-                      className={c === category ? 'text-bold' : ''}
                       to={getFilterUrl({ category: c })}
+                      className={c === category ? 'text-bold' : ''}
                     >
                       {c}
                     </Link>
@@ -169,8 +170,8 @@ const SearchScreen = ()=>{ const navigate = useNavigate();
               <ul>
                 <li>
                   <Link
+                   to={getFilterUrl({ price: 'all' })}
                     className={'all' === price ? 'text-bold' : ''}
-                    to={getFilterUrl({ price: 'all' })}
                   >
                     Any
                   </Link>
@@ -211,6 +212,8 @@ const SearchScreen = ()=>{ const navigate = useNavigate();
               </ul>
             </div>
           </Col>
+
+
           <Col md={9}>
             {loading ? (
               <LoadingBox></LoadingBox>
@@ -221,11 +224,15 @@ const SearchScreen = ()=>{ const navigate = useNavigate();
                 <Row className="justify-content-between mb-3">
                   <Col md={6}>
                     <div>
+                      {/* results === 0 show No else show results count */}
                       {countProducts === 0 ? 'No' : countProducts} Results
+                       {/* query not equal to all ? append the query etc  */}
                       {query !== 'all' && ' : ' + query}
                       {category !== 'all' && ' : ' + category}
                       {price !== 'all' && ' : Price ' + price}
                       {rating !== 'all' && ' : Rating ' + rating + ' & up'}
+
+                {/* if there is a match; thus the query,category etc are not equal to all, show button to clear all filters n redirect to search screen */}
                       {query !== 'all' ||
                       category !== 'all' ||
                       rating !== 'all' ||
@@ -254,6 +261,7 @@ const SearchScreen = ()=>{ const navigate = useNavigate();
                     </select>
                   </Col>
                 </Row>
+
                 {products.length === 0 && (
                   <MessageBox>No Product Found</MessageBox>
                 )}
@@ -267,6 +275,11 @@ const SearchScreen = ()=>{ const navigate = useNavigate();
                 </Row>
   
                 <div>
+
+                  {/* 1. we have created an arrya from pages
+                      2. map each page to <LinkContainer>
+                      3. arrays start  from  0 hence x + 1; 0+1  = 1 
+                   */}
                   {[...Array(pages).keys()].map((x) => (
                     <LinkContainer
                       key={x + 1}
@@ -285,6 +298,7 @@ const SearchScreen = ()=>{ const navigate = useNavigate();
               </>
             )}
           </Col>
+
         </Row>
       </div>
     );
