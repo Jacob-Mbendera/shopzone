@@ -25,6 +25,7 @@ import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import { getError } from './utils/errors.utils';
 import SearchBox from './components/search-box/search-box';
+import SearchScreen from './screens/search-screen/search-screen';
 
 function App() {
 
@@ -143,6 +144,7 @@ return (
               <Route path='/order/:id' element={<OrderScreen />} />
               <Route path='/orderhistory' element={<OrderHistory />} />
               <Route path='/profile' element={<UserProfile/>} />
+              <Route path='/search' element={<SearchScreen />} />
             </Routes> 
           </Container>
         </main>

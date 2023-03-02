@@ -13,6 +13,7 @@ productRouter.get('/', async (req, res) =>{
 const PAGE_SIZE = 3;
 productRouter.get('/search', expressAsyncHandler(async(req,res)=>{
     
+        const { query }  = req;
         //get these from the query string
         const pageSize = query.pageSize || PAGE_SIZE;
         const page = query.page || 1;
@@ -33,11 +34,12 @@ productRouter.get('/search', expressAsyncHandler(async(req,res)=>{
         {};
 
         const  categoryFilter = category && category !=='all' ? {category} : {};
-        const  ratingFilter = rating && rating ? {
+        const  ratingFilter = rating && rating !=="all" ? {
             rating:{
                 $gte: Number(rating)
             },
         } : {};
+
         const priceFilter = price && price  !=='all' ? {
             price: {
                 //e.g  range 1-50
@@ -51,7 +53,7 @@ productRouter.get('/search', expressAsyncHandler(async(req,res)=>{
         :order==="lowest"
         ?{price: 1}
         :order==="highest"
-        ?{price: -1}
+        ?{price: -1} //reverse
         :order==="toprated"
         ?{rating: -1}
         :order==="newest"
