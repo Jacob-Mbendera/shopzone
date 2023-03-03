@@ -33,7 +33,7 @@ const PaymentMethod = () => {
     const submitHandler = (e)=>{
         e.preventDefault();
         ctxDispatch({type:'SAVE_PAYMENT_METHOD', payload: paymentMethodName});
-        navigate('/placeorder');
+        navigate('/order');
 
     }
 

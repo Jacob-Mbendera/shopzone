@@ -1,4 +1,4 @@
-import './shipping.screen.scss';
+import './shipping.screen.styles.scss';
 import React, { useContext, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async';
 import  Form from 'react-bootstrap/Form';
