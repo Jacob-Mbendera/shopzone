@@ -22,7 +22,7 @@ productRouter.get('/search', expressAsyncHandler(async(req,res)=>{
         const price = query.price || '';
         const rating = query.rating || '';
         const order = query.order || '';
-        const searchQuery = query.query || ''; //query string
+        const searchQuery = query.query || ''; //query string; searches for words that match 
 
         //if query is not equal to 'all'; set searchQuery to the object or else set it to an empty object
         const queryFilter = searchQuery && searchQuery !== 'all' ? {

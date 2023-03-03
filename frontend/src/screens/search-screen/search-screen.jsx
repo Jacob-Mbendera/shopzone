@@ -246,7 +246,7 @@ const SearchScreen = ()=>{ const navigate = useNavigate();
                       ) : null}
                     </div>
                   </Col>
-                  <Col className="text-end">
+                  <Col className="text-end"> 
                     Sort by{' '}
                     <select
                       value={order}

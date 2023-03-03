@@ -122,7 +122,7 @@ return (
                 
                 categories.map((category) =>(
                   <Nav.Item key={category}>
-                    <LinkContainer to={`/search/category/=${category}`} onClick={()=> setSideBarIsOpen(false)}>
+                    <LinkContainer to={`/search?category=${category}`} onClick={()=> setSideBarIsOpen(false)}>
                       <Nav.Link>{category}</Nav.Link>
                     </LinkContainer>
                   </Nav.Item>
