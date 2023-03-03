@@ -1,5 +1,5 @@
 import express from 'express';
-import data from './data/data.js';
+import path from 'path'
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import seedRouter from './routes/seed.routes.js';
@@ -40,6 +40,12 @@ app.use('/api/users/', userRouter);
 app.use('/api/orders/', orderRouter);
 // app.use('/api/orders/:id', orderRouter);
 
+//returns the currrent directory 
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, '/frontend/build')));
+app.get('*', (req, res) =>
+  res.sendFile(path.join(__dirname, '/frontend/build/index.html'))
+);
 
 //error handler for express
 //works a middleware
