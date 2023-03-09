@@ -47,7 +47,7 @@ const OrderHistory = ()=>  {
             dispatch({type: 'ORDERS_FETCH_REQUEST'});
             try{
                 const { data } = await axios.get('/api/orders/mine',{
-                    headers: {authorization: `Bearer ${userInfo.token}`}
+                    headers: {Authorization: `Bearer ${userInfo.token}`}
                 })
                 // console.log(data);
                 dispatch({type: 'ORDERS_FETCH_SUCCESS', payload: data});
@@ -72,7 +72,7 @@ const OrderHistory = ()=>  {
 
         {
             loading ? (<LoadingBox></LoadingBox>) : 
-            error ? (<MessageBox variant="danger"></MessageBox>) :
+            error ? (<MessageBox variant="danger">{error}</MessageBox>) :
             (
                 <table className='table'>
                     <thead>
@@ -85,6 +85,7 @@ const OrderHistory = ()=>  {
                             <th>Action</th>
                         </tr>
                     </thead>
+                    <tbody>
                         {
                             orders.map((order)=>(
                                 <tr key={order._id}>
@@ -106,8 +107,6 @@ const OrderHistory = ()=>  {
                                 </tr>
                             ))
                         }
-                    <tbody>
-                        
                     </tbody>
                 </table>
             )
