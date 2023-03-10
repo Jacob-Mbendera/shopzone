@@ -1,7 +1,8 @@
 import express from 'express';
 import expresssyncHandler from 'express-async-handler';
-import { isAuth } from '../utils.js';
+import { isAdmin, isAuth } from '../utils.js';
 import Order from '../models/order.models.js'
+import User from '../models/user.models.js'
 import expressAsyncHandler from 'express-async-handler';
 
 
@@ -16,6 +17,54 @@ orderRouter.get("/mine", isAuth, expressAsyncHandler(async(req,res)=>{
    const orders = await Order.find({user: req.user._id}); //returns ALL the orders of a current use
       res.send(orders)
 }))
+
+orderRouter.get("/summary", isAuth, isAdmin, expressAsyncHandler(async(req, res)=>{
+
+   const orders = await Order.aggregate([
+
+      {
+         $group:{
+            _id: null, //group all data AND
+            numOfOrder: {$sum: 1}, // counts # of elements/documents in Order collection(Orders) & set it to numOfOrder
+            totalSales: {$sum: "$totalPrice"}
+
+         },
+      },
+
+   ]);
+
+   const users = await User.aggregate([
+
+      {
+         $group:{
+            _id: null,
+            users: {$sum: 1} 
+         },
+      },
+
+   ]);
+
+   const dailyOrders = await Order.aggregate([
+
+      {
+         $group:{
+            _id: {$dateToString: {format: "%Y-%m-%d", date: "$createdAt" }},
+            orders: {$sum : 1},
+            sales: { $sum: "$totalPrice"}
+         },
+      },
+
+      {$sort: {
+            _id: 1
+         }
+      }
+
+   ]);
+
+   res.send({orders, users, dailyOrders});
+
+}));
+
 orderRouter.get("/:id", isAuth, expressAsyncHandler(async(req,res)=>{
    const order = await Order.findById(req.params.id);
 
