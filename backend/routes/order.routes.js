@@ -25,7 +25,7 @@ orderRouter.get("/summary", isAuth, isAdmin, expressAsyncHandler(async(req, res)
       {
          $group:{
             _id: null, //group all data AND
-            numOfOrder: {$sum: 1}, // counts # of elements/documents in Order collection(Orders) & set it to numOfOrder
+            numOfOrders: {$sum: 1}, // counts # of elements/documents in Order collection(Orders) & set it to numOfOrder
             totalSales: {$sum: "$totalPrice"}
 
          },
@@ -38,7 +38,7 @@ orderRouter.get("/summary", isAuth, isAdmin, expressAsyncHandler(async(req, res)
       {
          $group:{
             _id: null,
-            users: {$sum: 1} 
+            numOfUsers: {$sum: 1} 
          },
       },
 
