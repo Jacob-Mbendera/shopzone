@@ -34,6 +34,10 @@ const reducer = (state, action)=>{
   }
 }
 
+const threeDOptions = {
+  title: "Product Categories",
+  is3D: true,
+};
 
 
 const DashboardScreen = ()=> {
@@ -121,6 +125,22 @@ fetchData();
                   loader={<div>loading data...</div> }
                   data = {[ ["Date", "Sales"], 
                   ...summary.dailyOrders.map((x)=> [x._id, x.sales])
+
+                  ]}></Chart>
+
+                )}
+              </div>
+
+              <div className="my-3">
+              <h1>Categories</h1>
+                {summary.productCategories.length === 0 ?( <MessageBox> No Categories</MessageBox>) :(
+                  <Chart width="100%" 
+                  height="400px" 
+                  chartType='PieChart'
+                  loader={<div>loading data...</div> }
+                  options ={threeDOptions}
+                  data = {[ ["Category", "Products"], 
+                  ...summary.productCategories.map((x)=> [x._id, x.count])
 
                   ]}></Chart>
 

@@ -11,6 +11,19 @@ productRouter.get('/', async (req, res) =>{
 });
 
 const PAGE_SIZE = 3;
+orderRouter.get("/admin", isAuth,isAdmin(expressAsyncHandler(async(req,res)=>{
+
+   const { query } = req;
+   const page = query.page || 1;
+   const pageSize = query.pageSize || PAGE_SIZE;
+
+   const products = await Product.find().skip(pageSize * (page - 1)).limit(pageSize);
+
+   const countDocuments = await Product.countDocuments();
+   res.send({products, countDocuments, page, pages: Math.ceil(countDocuments / pageSize) })
+   
+
+})));
 productRouter.get('/search', expressAsyncHandler(async(req,res)=>{
     
         const { query }  = req;
@@ -60,6 +73,7 @@ productRouter.get('/search', expressAsyncHandler(async(req,res)=>{
         ?{createdAt: -1}
         :{_id: -1}
 
+        //passing the filters to Product
         const products = await Product.find({
             ...queryFilter,
             ...categoryFilter,

@@ -4,6 +4,7 @@ import { isAdmin, isAuth } from '../utils.js';
 import Order from '../models/order.models.js'
 import User from '../models/user.models.js'
 import expressAsyncHandler from 'express-async-handler';
+import Product from '../models/product.models.js';
 
 
 const orderRouter = express.Router();
@@ -13,10 +14,14 @@ orderRouter.get("/", isAuth,expressAsyncHandler(async(req,res)=>{
       res.send(orders)
 }))
 
+
+
 orderRouter.get("/mine", isAuth, expressAsyncHandler(async(req,res)=>{
    const orders = await Order.find({user: req.user._id}); //returns ALL the orders of a current use
       res.send(orders)
 }))
+
+
 
 orderRouter.get("/summary", isAuth, isAdmin, expressAsyncHandler(async(req, res)=>{
 
@@ -61,9 +66,20 @@ orderRouter.get("/summary", isAuth, isAdmin, expressAsyncHandler(async(req, res)
 
    ]);
 
-   res.send({orders, users, dailyOrders});
+   const  productCategories = await Product.aggregate([
+      {
+      $group:{
+         _id: "$category",
+         count: {$sum: 1},
+      }
+   
+   }
+   ])
+
+   res.send({orders, users, dailyOrders, productCategories});
 
 }));
+
 
 orderRouter.get("/:id", isAuth, expressAsyncHandler(async(req,res)=>{
    const order = await Order.findById(req.params.id);
