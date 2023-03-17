@@ -7,6 +7,7 @@ import productRouter from './routes/products.routes.js';
 import userRouter from './routes/users.routes.js';
 import morgan from 'morgan';
 import orderRouter from './routes/order.routes.js';
+import uploadRouter from './routes/upload.routes.js';
 
 dotenv.config();
 
@@ -30,15 +31,10 @@ app.use('/api/keys/paypal', (req, res)=>{
 
 //APIs
 app.use('/api/seed/', seedRouter)
-
+app.use('/api/upload/', uploadRouter)
 app.use('/api/products', productRouter);
-app.use('/api/products/slug/:slug', productRouter);
-app.use('/api/products/:id', productRouter);
-
 app.use('/api/users/', userRouter);
-
 app.use('/api/orders/', orderRouter);
-// app.use('/api/orders/:id', orderRouter);
 
 
 //error handler for express

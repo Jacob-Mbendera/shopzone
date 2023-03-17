@@ -60,7 +60,7 @@ const ProductEditScreen = ()=> {
 
   const { state } = useContext(Store);
   const { userInfo } = state;
-  const [{loading, error,}, dispatch ] = useReducer(reducer,{loading: true, error: ""});
+  const [{loading, error, loadingUpdate}, dispatch ] = useReducer(reducer,{loading: true, error: ""});
 
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
@@ -182,7 +182,8 @@ const ProductEditScreen = ()=> {
            </Form.Group>
 
           <div className="mb-3">  
-              <Button className="updateButton" type="submit">Update</Button>
+              <Button className="updateButton" type="submit" disabled={loadingUpdate}>Update</Button>
+              {loadingUpdate && <LoadingBox />}
            </div>
 
         </Form>
