@@ -44,7 +44,7 @@ const ProductEditScreen = ()=> {
   const  navigate = useNavigate();
 
   const { state } = useContext(Store);
-  const { useInfo } = state;
+  const { userInfo } = state;
   const [{loading, error,}, dispatch ] = useReducer(reducer,{loading: true, error: ""});
 
   const [name, setName] = useState("");
@@ -90,9 +90,9 @@ const ProductEditScreen = ()=> {
 
         <h1>Edit Product {productId} </h1>
         {
-          // loading ? (<LoadingBox /> ) :
-          // error ? (<MessageBox variant="danger"> {error} </MessageBox>)
-          // :(
+          loading ? (<LoadingBox /> ) :
+          error ? (<MessageBox variant="danger"> {error} </MessageBox>)
+          :(
         <Form>
           <Form.Group className="mb-3" controlId="name">
             <Form.Label>Name</Form.Label>
@@ -140,7 +140,7 @@ const ProductEditScreen = ()=> {
            </div>
 
         </Form>
-          // )
+          )
         }
     </Container>
   )

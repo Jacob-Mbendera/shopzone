@@ -56,7 +56,7 @@ const reducer = (state, action)=>{
 
 
 const ProductList = ()=> {
-    const {search, pathname} = useLocation();
+    const {search} = useLocation();
     const searchParams = new URLSearchParams(search);
     const page = searchParams.get("page") || 1;
 
