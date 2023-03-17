@@ -30,6 +30,7 @@ import ProtectedRoute from './components/protected-route/protected-route.compone
 import AdminRoute from './components/admin-route/admin-route.component';
 import DashboardScreen from './screens/dashboard/dashboard-screen';
 import ProductList from './screens/product-list-screen/product-list-screen';
+import ProductEditScreen from './screens/product-edit-screen/product-edit-screen';
 
 function App() {
 
@@ -179,6 +180,7 @@ return (
               {/* Admin Routes */}
               <Route path="/admin/dashboard" element={ <AdminRoute> <DashboardScreen /> </AdminRoute> } />
               <Route path="/admin/products" element={ <AdminRoute> <ProductList /> </AdminRoute> } />
+              <Route path="/admin/products/:id" element={ <AdminRoute> <ProductEditScreen /> </AdminRoute> } />
 
             </Routes> 
           </Container>

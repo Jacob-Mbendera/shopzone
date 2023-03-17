@@ -11,7 +11,6 @@ const reducer = (state, action)=>{
         case 'FETCH_SUCCESS':
             return{
                 ...state, 
-                summary: action.payload,
                 loading: false,
             }
   

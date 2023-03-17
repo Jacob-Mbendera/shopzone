@@ -1,8 +1,8 @@
 import axios from 'axios'
 import React, { useContext, useEffect, useReducer } from 'react'
-import Button from 'react-bootstrap/esm/Button'
-import Col from 'react-bootstrap/esm/Col'
-import Row from 'react-bootstrap/esm/Row'
+import Button from 'react-bootstrap/Button'
+import Col from 'react-bootstrap/Col'
+import Row from 'react-bootstrap/Row'
 import { Helmet } from 'react-helmet-async'
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
@@ -130,7 +130,7 @@ const createProductHandler = async ()=>{
                             <th>PRICE</th>
                             <th>CATEGORY</th>
                             <th>BRAND</th>
-                            <th>ACTION</th>
+                            <th>ACTIONS</th>
                         </thead>
 
                         <tbody>
@@ -142,6 +142,9 @@ const createProductHandler = async ()=>{
                                         <td>{product.price}</td>
                                         <td>{product.category}</td>
                                         <td>{product.brand}</td>
+                                        <td>
+                                            <Button variant="light" size="sm" onClick={ ()=> navigate(`/admin/products/${product._id}`)}>Edit</Button>
+                                        </td>
                                     </tr>
                                 ))
                             }

@@ -40,6 +40,14 @@ main {
   max-width: 600px;
 }
 
+
+/* Buttons */
+.updateButton{
+  background-color: #2596be
+  ;
+}
+
+
 /* side bar */
 .navbar-brand{
   font-weight: bold;

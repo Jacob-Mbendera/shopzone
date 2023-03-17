@@ -109,7 +109,7 @@ const UserProfile = () => {
             </Form.Group>
 
             <div className="mb-3">
-                <Button id="userButton" type="submit" variant="dark">Update</Button>
+                <Button className="updateButton" id="userButton" type="submit" >Update</Button>
             </div>
 
         </Form>
