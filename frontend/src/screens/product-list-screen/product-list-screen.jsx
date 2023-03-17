@@ -1,7 +1,11 @@
 import axios from 'axios'
 import React, { useContext, useEffect, useReducer } from 'react'
+import Button from 'react-bootstrap/esm/Button'
+import Col from 'react-bootstrap/esm/Col'
+import Row from 'react-bootstrap/esm/Row'
 import { Helmet } from 'react-helmet-async'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import LoadingBox from '../../components/loading-box/loading-box.component'
 import MessageBox from '../../components/message-box/message-box.component'
 import { Store } from '../../context/store.context'
@@ -29,6 +33,21 @@ const reducer = (state, action)=>{
                 ...state, 
                 error: action.payload,
                 loading: false}
+
+
+        case 'CREATE_REQUEST':
+            return{...state, loadingCreate: true}
+  
+        case 'CREATE_SUCCESS':
+            return{
+                ...state, 
+                loadingCreate: false,
+            }
+  
+        case 'CREATE_FAIL':
+            return{
+                ...state,
+                loadingCreate: false}
   
         default:
             return state;
@@ -43,8 +62,30 @@ const ProductList = ()=> {
 
     const { state } = useContext(Store);
     const { userInfo } = state;
+    const  navigate =  useNavigate();
 
-    const [{loading, error, products, pages }, dispatch]  =useReducer(reducer, {loading: true, error: "", })
+    const [{loading, error, products, pages,loadingCreate, }, dispatch]  =useReducer(reducer, {loading: true, error: "", })
+
+
+
+const createProductHandler = async ()=>{
+    if(window.confirm("Create new product?")){
+        try {
+            dispatch({type: "CREATE_REQUEST"});
+            const { data } = await axios.post("/api/products/", {}, {
+                headers:{
+                    authorization:`Bearer ${userInfo.token}`
+                }
+            })
+            toast.success("Product created!");
+            dispatch({type: "CREATE_SUCCESS"});
+            navigate(`/admin/products/${data.product._id}`) //id  of the product we just created
+        } catch (err) {
+            toast.error(getError(err));
+            dispatch({type: "CREATE_FAIL"});
+        }
+    }
+}
 
     useEffect(()=>{
         const fetchData = async()=>{
@@ -67,8 +108,16 @@ const ProductList = ()=> {
             <title>Admin Products List</title>
         </Helmet>
 
-        <h1>Product List</h1>
+        <Row>
+            <Col><h1>Products</h1></Col>
+            <Col className="col text-end">
+                <div>
+                    <Button type="button" variant="primary" onClick={ createProductHandler }>Create Product</Button>
+                </div>
+            </Col>
+        </Row>
 
+        {loadingCreate && <LoadingBox />}
         {
             loading ? (<LoadingBox />) :
             error ? (<MessageBox variant="danger">{error}</MessageBox>) :

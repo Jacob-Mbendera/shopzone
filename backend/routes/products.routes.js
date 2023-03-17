@@ -10,6 +10,25 @@ productRouter.get('/', async (req, res) =>{
     res.send(products);
 });
 
+productRouter.post("/", isAuth, isAdmin, expressAsyncHandler(async(req,res)=>{
+    const newProduct =  new Product({
+        name: "Sample Name" + Date.now(),
+        slug: "Sample Name" + Date.now(),
+        image:  "/images/p1.jpg",
+        brand:  "Sample Brand",
+        category: "Sample Category",
+        description:  "Sample Description",
+        price: 0,
+        countInStock: 0,
+        rating: 0,
+        numReviews: 0,
+    });
+
+    const product = await newProduct.save();
+    res.send({ message: "Product Created",  product});
+})
+)
+
 const PAGE_SIZE = 3;
 
 productRouter.get("/admin", isAuth,isAdmin, expressAsyncHandler(async(req,res)=>{
@@ -21,7 +40,11 @@ productRouter.get("/admin", isAuth,isAdmin, expressAsyncHandler(async(req,res)=>
     const products = await Product.find().skip(pageSize * (page - 1)).limit(pageSize);
  
     const countDocuments = await Product.countDocuments();
-    res.send({products, countDocuments, page, pages: Math.ceil(countDocuments / pageSize) })
+    res.send({
+        products, 
+        countDocuments, 
+        page, 
+        pages: Math.ceil(countDocuments / pageSize) })
     
  
  }));
