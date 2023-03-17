@@ -33,6 +33,21 @@ const reducer = (state, action)=>{
                 error: action.payload,
                 loading: false}
   
+        case 'UPDATE_REQUEST':
+            return{...state, loadingUpdate: true}
+  
+        case 'UPDATE_SUCCESS':
+            return{
+                ...state, 
+                loadingUpdate: false,
+            }
+  
+        case 'UPDATE_FAIL':
+            return{
+                ...state, 
+                error: action.payload,
+                loadingUpdate: false}
+  
         default:
             return state;
     }
@@ -57,6 +72,37 @@ const ProductEditScreen = ()=> {
   const [description, setDescription] = useState("");
   
 
+  const submitHandler = async (e)=>{
+    e.preventDefault();
+    try {
+      dispatch({type:"UPDATE_REQUEST" })
+      await axios.put(
+        `/api/products/${productId}`,
+        {
+          _id: productId,
+          name,
+          slug,
+          price,
+          image,
+          category,
+          brand,
+          countInStock,
+          description,
+        },
+        {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      dispatch({type:"UPDATE_SUCCESS" });
+      toast.success('Product updated successfully');
+      navigate('/admin/products');
+      
+    } catch (err) {
+      toast.error(getError(err));
+      dispatch({type:"UPDATE_FAIL" })
+    }
+
+  }
   useEffect(()=>{
     const fetchData = async ()=>{
       dispatch({type:"FETCH_REQUEST" })
@@ -93,7 +139,7 @@ const ProductEditScreen = ()=> {
           loading ? (<LoadingBox /> ) :
           error ? (<MessageBox variant="danger"> {error} </MessageBox>)
           :(
-        <Form>
+        <Form onSubmit={submitHandler}>
           <Form.Group className="mb-3" controlId="name">
             <Form.Label>Name</Form.Label>
             <Form.Control value={name}  onChange={(e) => setName(e.target.value)} required />
