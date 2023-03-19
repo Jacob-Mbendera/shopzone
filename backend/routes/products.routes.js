@@ -34,7 +34,7 @@ productRouter.put('/:id',isAuth, isAdmin,
       const productId = req.params.id;
       const product = await Product.findById(productId);
       if (product) {
-        product.name = req.body.name;
+        product.name = req.body.name ;
         product.slug = req.body.slug;
         product.price = req.body.price;
         product.image = req.body.image;
@@ -50,6 +50,21 @@ productRouter.put('/:id',isAuth, isAdmin,
     })
   );
 
+
+  productRouter.delete('/:id',isAuth, isAdmin,
+    expressAsyncHandler(async (req, res) => {
+
+        const product  = await Product.findById(req.params.id);
+
+        if(product){
+            await product.remove();
+            res.send({message: "product deleted successfully"})
+        } else{
+            res.status(404).send({message: "product with that not found"})
+        }
+
+    })
+)
 const PAGE_SIZE = 3;
 
 productRouter.get("/admin", isAuth,isAdmin, expressAsyncHandler(async(req,res)=>{

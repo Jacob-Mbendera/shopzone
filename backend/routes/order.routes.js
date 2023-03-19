@@ -9,8 +9,8 @@ import Product from '../models/product.models.js';
 
 const orderRouter = express.Router();
 
-orderRouter.get("/", isAuth,expressAsyncHandler(async(req,res)=>{
-   const orders = await Order.find(); 
+orderRouter.get("/", isAuth,isAdmin, expressAsyncHandler(async(req,res)=>{
+   const orders = await Order.find().populate("user", "name"); //in Order Model; will get user object & its info in user collect, but we only want the name
       res.send(orders)
 }))
 

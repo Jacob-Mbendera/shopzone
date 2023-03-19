@@ -31,6 +31,7 @@ import AdminRoute from './components/admin-route/admin-route.component';
 import DashboardScreen from './screens/dashboard/dashboard-screen';
 import ProductList from './screens/product-list-screen/product-list-screen';
 import ProductEditScreen from './screens/product-edit-screen/product-edit-screen';
+import OrderListScreen from './screens/order-list-screen/order-list-screen';
 
 function App() {
 
@@ -123,7 +124,7 @@ return (
                           <LinkContainer to="/admin/products">
                             <NavDropdown.Item>Products</NavDropdown.Item>
                           </LinkContainer>
-                          <LinkContainer to="/admin/orderlist">
+                          <LinkContainer to="/admin/orders">
                             <NavDropdown.Item>orders</NavDropdown.Item>
                           </LinkContainer>
                           <LinkContainer to="/admin/orderlist">
@@ -181,6 +182,7 @@ return (
               <Route path="/admin/dashboard" element={ <AdminRoute> <DashboardScreen /> </AdminRoute> } />
               <Route path="/admin/products" element={ <AdminRoute> <ProductList /> </AdminRoute> } />
               <Route path="/admin/products/:id" element={ <AdminRoute> <ProductEditScreen /> </AdminRoute> } />
+              <Route path="/admin/orders" element={ <AdminRoute> <OrderListScreen /> </AdminRoute> }/>
 
             </Routes> 
           </Container>
