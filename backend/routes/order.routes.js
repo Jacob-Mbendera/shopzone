@@ -114,6 +114,23 @@ orderRouter.post("/", isAuth, expresssyncHandler( async(req, res)=>{
 }))
 
 
+orderRouter.put("/:id/deliver", isAuth, expressAsyncHandler(async(req,res)=>{
+
+   const order = await Order.findById(req.params.id);
+
+   if(order){
+      order.isDelivered = true,
+      order.deliveredAt = Date.now();
+
+      await order.save();
+      res.send(order);
+   } else{
+      res.status(404).send({ message: "Order not found"});
+   }
+
+}))
+
+
 orderRouter.put("/:id/pay", expressAsyncHandler(async(req,res)=>{
 
          const order = await Order.findById(req.params.id);

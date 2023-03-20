@@ -13,6 +13,7 @@ import { Link } from 'react-router-dom';
 import MessageBox from '../../components/message-box/message-box.component';
 import {PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
 import { toast } from 'react-toastify';
+import Button from 'react-bootstrap/Button';
 
 const reducer = (state, action)=>{
     switch(action.type){
@@ -56,10 +57,38 @@ const reducer = (state, action)=>{
                 successPay: false
             }
 
+                //
+        case 'DELIVER_REQUEST':
+            return{...state, loadingDeliver: true}
+
+        case 'DELIVER_SUCCESS':
+            return{
+                ...state, 
+                loadingDeliver: false,
+                successDeliver: true,
+            }
+
+        case 'DELIVER_FAIL':
+            return{
+                ...state, 
+                loadingDeliver: false,
+                errorDeliver: action.payload,
+            }
+
+        case 'DELIVER_RESET':
+            return{
+                ...state, 
+                loadingDeliver: false,
+                successDeliver: false,
+            }
+
         default:
             return state;
     }
 }
+
+
+
 const OrderScreen = ()=> {
     const params = useParams();
     const {id : orderId} = params;
@@ -68,7 +97,7 @@ const OrderScreen = ()=> {
     const {
         userInfo
     } = state;
-    const [{loading, error, order, loadingPay, successPay},dispatch] = useReducer(reducer,{order:{}, loading: true, error:'', loadingPay:false, successPay: false});
+    const [{loading, error, order, loadingPay, successPay, loadingDeliver, successDeliver, errorDeliver},dispatch] = useReducer(reducer,{order:{}, loading: true, error:'', loadingPay:false, successPay: false});
     const navigate = useNavigate();
 
     const[{isPending}, paypalDispatch] = usePayPalScriptReducer();
@@ -80,7 +109,6 @@ const OrderScreen = ()=> {
                 headers: { authorization: `Bearer ${userInfo.token}`},
             });
             dispatch({type:'ORDER_FETCH_SUCCESS', payload: data }); //passing data from backend to the reducer
-            // console.log(data)
             } catch(err){
                 dispatch({type:'ORDER_FETCH_FAIL', payload: getError(err)});
             }
@@ -91,11 +119,14 @@ const OrderScreen = ()=> {
             return navigate('/signin');
         }
 
-        if(!order._id || successPay || (order._id && order._id !== orderId )){
+        if(!order._id || successPay || successDeliver || (order._id && order._id !== orderId )){
             fetchData();
 
             if(successPay){
                 dispatch({type: 'PAY_RESET'})
+            }
+            if(successDeliver){
+                dispatch({type: 'DELIVER_RESET'})
             }
         } else{
             const loadPaypalScript = async()=>{
@@ -110,7 +141,7 @@ const OrderScreen = ()=> {
             loadPaypalScript();
         }
         
-    }, [order, userInfo, orderId, navigate, paypalDispatch, successPay]);
+    }, [order, userInfo, orderId, navigate, paypalDispatch, successPay, successDeliver]);
 
 
     //PAYPAL FUNCTIONS
@@ -139,6 +170,23 @@ const OrderScreen = ()=> {
             }
         })
     }
+
+    const deliverHandler = async()=>{
+
+        try {
+            dispatch({type: 'DELIVER_REQUEST'})
+            await axios.put(`/api/orders/${order._id}/deliver`, {}, {
+                headers:{authorization: `Bearer ${userInfo.token}`}
+            })
+            dispatch({type: 'DELIVER_SUCCESS'})
+            toast.success("Order delivered");
+            
+        } catch (err) {
+            toast.error(getError(err));
+            dispatch({type: 'DELIVER_FAIL'})
+        }
+
+    }
     const onError = err=> toast.error(getError(err));
 
   return loading ?(<LoadingBox> </LoadingBox>) 
@@ -161,7 +209,7 @@ const OrderScreen = ()=> {
                         </Card.Text>
                         {
                             order.isDelivered ? 
-                            (<MessageBox variant="success"> Order delivered at{order.deliveredAt}</MessageBox>) : 
+                            (<MessageBox variant="success"> Order delivered on {order.deliveredAt.substring(0,10)}</MessageBox>) : 
                             (<MessageBox variant="danger">Order not Deliverd</MessageBox>)
                         }
                     </Card.Body>
@@ -254,6 +302,16 @@ const OrderScreen = ()=> {
                             )}
 
                             {loadingPay &&(<LoadingBox></LoadingBox>)}
+
+                            {
+                            userInfo.isAdmin && order.isPaid && !order.isDelivered &&(
+                                <ListGroup.Item>  
+                                    {loadingDeliver && <LoadingBox/>} 
+                                    <div className="d-grid">
+                                        <Button type="button" variant="dark" onClick={deliverHandler}>Deliver Order</Button>
+                                    </div>
+                                </ListGroup.Item>
+                            )}
                         </ListGroup>
                     </Card.Body>
                 </Card>

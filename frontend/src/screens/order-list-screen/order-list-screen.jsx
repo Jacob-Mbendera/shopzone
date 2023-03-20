@@ -75,9 +75,9 @@ const OrderListScreen = ()=> {
     loading ? (<LoadingBox />) : 
     error ? (<MessageBox variant="danger">{error} </MessageBox>) :
     (
-        <>
             <table className="table">
             <thead>
+                <tr>
                 <th>ID</th>
                 <th>USER</th>
                 <th>DATE</th>
@@ -85,6 +85,7 @@ const OrderListScreen = ()=> {
                 <th>PAID</th>
                 <th>DELIVERED</th>
                 <th>ACTIONS</th>
+                </tr>
             </thead>
 
             <tbody>
@@ -103,7 +104,6 @@ const OrderListScreen = ()=> {
                 }
             </tbody>
        </table>
-        </>
     )
     }
        

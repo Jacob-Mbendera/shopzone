@@ -173,12 +173,14 @@ const deleteHandler = async(product)=>{
                 <>
                     <table className="table">
                         <thead>
+                        <tr>
                             <th>ID</th>
                             <th>NAME</th>
                             <th>PRICE</th>
                             <th>CATEGORY</th>
                             <th>BRAND</th>
                             <th>ACTIONS</th>
+                            </tr>
                         </thead>
 
                         <tbody>
