@@ -3,15 +3,49 @@ import express from "express";
 import User from "../models/user.models.js";
 import expressAsyncHandler from 'express-async-handler';
 import bcrypt from 'bcryptjs';
-import { generateToken, isAuth } from "../utils.js";
+import { generateToken, isAdmin, isAuth } from "../utils.js";
 
 
 const userRouter = express.Router();
 
-userRouter.get('/', async (req,res) =>{
-   const users = await User.find();
+userRouter.get("/", isAuth, isAdmin, expressAsyncHandler(async(req,res)=>{
+    const  users = await User.find();
     res.send(users);
-});
+
+}))
+
+userRouter.get(
+    "/:id",
+    isAuth,
+    isAdmin,
+    expressAsyncHandler(async (req, res) => {
+      const user = await User.findById(req.params.id);
+      if (user) {
+        res.send(user);
+      } else {
+        res.status(404).send({ message: 'User Not Found' });
+      }
+    })
+  );
+
+
+userRouter.put(
+    "/:id",
+    isAuth,
+    isAdmin,
+    expressAsyncHandler(async (req, res) => {
+      const user = await User.findById(req.params.id);
+      if (user) {
+        user.name = req.body.name || user.name;
+        user.email = req.body.email || user.email;
+        user.isAdmin = Boolean(req.body.isAdmin);
+        const updatedUser = await user.save();
+        res.send({ message: 'User Updated', user: updatedUser });
+      } else {
+        res.status(404).send({ message: 'User Not Found' });
+      }
+    })
+  );
 
 
 userRouter.post('/signin', expressAsyncHandler( async(req,res) =>{
@@ -80,25 +114,6 @@ userRouter.put('/profile',isAuth, expressAsyncHandler(async(req,res)=>{
     } 
     })
 );
-/*
-userRouter.post('/signup', expressAsyncHandler( async(req,res)=>{
-
-    let user = await User.findOne({email: req.params.body});
-
-    if(user) return res.status(400).send({ message: "user with that email already  exists "});
-
-    user = new User({
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password,
-        isAdmin: req.body.isAdmin
-    });
 
 
-    await user.save();
-
-    res.send(user);
-
-}))
-*/
 export default userRouter; 
