@@ -115,5 +115,22 @@ userRouter.put('/profile',isAuth, expressAsyncHandler(async(req,res)=>{
     })
 );
 
+userRouter.delete(
+  "/:id",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    if (user) {
+
+      if(user.email === "jacob.mbendera@shopzone.com")
+        res.status(404).send({message: "You can not delete Admin"});
+      await user.remove();
+      res.send({ message: 'User Deleted'});
+    } else {
+      res.status(404).send({ message: 'User Not Found' });
+    }
+  })
+);
 
 export default userRouter; 

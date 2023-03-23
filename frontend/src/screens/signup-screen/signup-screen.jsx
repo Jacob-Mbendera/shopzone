@@ -37,7 +37,7 @@ const SignupScreen = () => {
         }
 
         try{
-            const { data } = await Axios.post('/api/users/signup', { name, email, password});
+            const { data } = await Axios.post('/api/users/signup', { name, email, password});   
             ctxDispatch({ type: 'SIGN_IN_USER', payload: data })
             localStorage.setItem("userInfo", JSON.stringify(data));
             navigate(redirect || '/');

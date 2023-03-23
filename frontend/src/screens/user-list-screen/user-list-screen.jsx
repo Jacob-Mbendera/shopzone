@@ -7,6 +7,7 @@ import { Store } from '../../context/store.context'
 import { getError } from '../../utils/errors.utils'
 import Button from 'react-bootstrap/Button'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 
 
@@ -29,9 +30,32 @@ const reducer = (state, action)=>{
                 error: action.payload,
                 loading: false}
   
-        default:
-            return state;
-    }
+                case 'DELETE_REQUEST':
+                    return{...state, loadingDelete: true, deleteSuccess: false,}
+          
+                case 'DELETE_SUCCESS':
+                    return{
+                        ...state, 
+                        loadingDelete: false,
+                        deleteSuccess: true,
+                    }
+          
+                case 'DELETE_FAIL':
+                    return{
+                        ...state, 
+                        loadingDelete: false
+                    }
+          
+                case 'DELETE_RESET':
+                    return{
+                        ...state, 
+                        loadingDelete: false,
+                        deleteSuccess: false,
+                    }
+
+                default:
+                        return state;
+                }
   }
 
 const UserListScreen = ()=> {
@@ -41,6 +65,25 @@ const UserListScreen = ()=> {
 
     const[{loading, error, users, loadingDelete, deleteSuccess}, dispatch] =  useReducer(reducer,{loading: true, error: ""});
 
+    
+    const userDeleteHandler = async (user)=>{
+        if(window.confirm("Are you sure you want to delete user")){
+            
+            try {
+                dispatch({type: "DELETE_REQUEST"});
+
+                await axios.delete(`/api/users/${user._id}`, {
+                    headers: { authorization: `Bearer ${userInfo.token}`}
+                })
+                dispatch({type: "DELETE_SUCCESS"});
+                toast.success("order deleted successfully.")
+            } catch (err) {
+                toast.error(getError(err));
+                dispatch({type: "DELETE_FAIL"});
+            }
+        }
+
+    }
 
     useEffect(()=>{
 
@@ -59,9 +102,12 @@ const UserListScreen = ()=> {
                 dispatch({type: "FETCH_FAIL"});
             }
         }
-    
-        fetchData();
-    },[userInfo])
+        if(deleteSuccess){
+            dispatch({type: "DELETE_RESET"});
+        } else{
+            fetchData();
+        }
+    },[userInfo, deleteSuccess])
   return (
     <div>
         <Helmet>
@@ -96,6 +142,7 @@ const UserListScreen = ()=> {
                             <td>{user.isAdmin ? "Yes" : "No"}</td>
                             <td>
                             <Button type="button" variant="light" size="sm" onClick={()=>{ navigate(`/admin/user/${user._id}`) }}>Details</Button>  &nbsp;
+                            <Button type="button" variant="danger" size="sm" onClick={()=> userDeleteHandler(user)}><i className='fas fa-trash'></i></Button>
                             </td>
                           
                         </tr>
