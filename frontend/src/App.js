@@ -34,12 +34,13 @@ import ProductEditScreen from './screens/product-edit-screen/product-edit-screen
 import OrderListScreen from './screens/order-list-screen/order-list-screen';
 import UserListScreen from './screens/user-list-screen/user-list-screen';
 import UserEditScreen from './screens/edit-user/edit-user';
+import MapScreen from './screens/map-screen/map-screen';
 
 function App() {
 
 
   const {state, dispatch: ctxDispatch} = useContext(Store);
-  const {cart, userInfo} = state;
+  const {cart, userInfo, fullBox} = state;
 
 const signoutHandler = () =>{
   try{
@@ -70,7 +71,17 @@ useEffect(()=>{
 },[])
 return (
     <BrowserRouter>
-      <div className={   sideBarIsOpen ? "d-flex flex-column site-container active-container" : "d-flex flex-column site-container"}>
+      <div className={   sideBarIsOpen ? //side bar open ?
+          fullBox ? //full box true ?
+          "d-flex flex-column site-container active-container full-box" : 
+          //full box false return 
+          "d-flex flex-column site-container active-container" 
+          
+          : //side bar closed ?
+            fullBox ? //full box true ?
+              "d-flex flex-column site-container full-box":
+              //full box false return 
+              "d-flex flex-column site-container"}>
         <ToastContainer position="top-right" limit={1} />
         <header> 
           <Navbar bg="dark" variant="dark" expand="lg">
@@ -170,9 +181,9 @@ return (
               <Route path='/payment' element={<PaymentMethod />} />
               <Route path='/order' element={<OrderReview />} />
               <Route path='/search' element={<SearchScreen />} />
+              <Route path='/map' element={<MapScreen />} />
+              
               {/* Protected Routes */}
-
-
               <Route path='/order/:id' element={  <ProtectedRoute> <OrderScreen /> </ProtectedRoute>} />
               <Route path='/orderhistory' element={ <ProtectedRoute> <OrderHistory /> </ProtectedRoute>} />
               <Route path='/profile' element={

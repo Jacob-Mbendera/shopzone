@@ -27,7 +27,8 @@ app.use(express.urlencoded({extended: true}));
 app.use(morgan("dev"));
 app.use('/api/keys/paypal', (req, res)=>{
     res.send(process.env.PAYPAL_CLIENT_ID || 'sb'); //if PAYPAL_CLIENT_ID doesnt exist return sand box
-})
+});
+app.use('/api/keys/google', (req, res)=> res.send({key: process.env.GOOGLE_API_KEY || ''}));
 
 //APIs
 app.use('/api/seed/', seedRouter)
