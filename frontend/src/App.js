@@ -172,7 +172,7 @@ return (
         <main> 
           <Container className='d-flex flex-column site-container mt-3'>
             <Routes>
-              <Route path='/' element ={ <HomeScreen />} />
+              <Route path='/' element ={ <HomeScreen />} /> 
               <Route path='/product/:slug' element={ <ProductScreen />} /> 
               <Route path='/cart' element={<CartScreen />} />
               <Route path='/signin' element={<SigninScreen />} />

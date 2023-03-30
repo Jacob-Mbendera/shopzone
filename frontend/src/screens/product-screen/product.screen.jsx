@@ -70,14 +70,16 @@ switch(action.type){
     const params  = useParams();
     const {slug} = params;
     
-    const [{product, loading, error, loadingCreateReview}, dispatch ] = useReducer(reducer, {product: [], loading: true, error: ''})
+   
 
     const navigate = useNavigate();
     const reviewsRef = useRef(null)
 
     const [rating, setRating] = useState(0);
     const [comment, setComment] = useState("");
+    const [selectedImage, setSelectedImage] = useState('');
 
+    const [{product, loading, error, loadingCreateReview}, dispatch ] = useReducer(reducer, {product: [], loading: true, error: ''})
     const submitHandler = async (e) => {
       e.preventDefault();
       if (!comment || !rating) {
@@ -158,7 +160,7 @@ switch(action.type){
       <Row>
 
         <Col md={6}>
-            <img className='img-large' src={product.image} alt={product.name}   /> 
+            <img className='img-large' src={selectedImage || product.image} alt={product.name}   /> 
         </Col>
 
         <Col md={3}>
@@ -177,7 +179,23 @@ switch(action.type){
               <ListGroup.Item>
                   Price: $ {product.price}
               </ListGroup.Item>
-
+              {/* thumbnail */}
+                  <Row xs={1} md={2} className="g-2">
+                    {[product.image, ...product.images].map((x) => (
+                      <Col key={x}>
+                        <Card>
+                          <Button
+                            className="thumbnail"
+                            type="button"
+                            variant="light"
+                            onClick={() => setSelectedImage(x)}
+                          >
+                            <Card.Img variant="top" src={x} alt="product" />
+                          </Button>
+                        </Card>
+                      </Col>
+                    ))}
+                  </Row>
               <ListGroup.Item>
                   Description: <p> {product.description} </p>
               </ListGroup.Item>

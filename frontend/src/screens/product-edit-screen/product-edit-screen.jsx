@@ -2,7 +2,6 @@ import axios from 'axios'
 import React, { useContext, useEffect, useReducer } from 'react'
 import { useState } from 'react'
 import Container from 'react-bootstrap/Container'
-import FormGroup from 'react-bootstrap/FormGroup'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import { Helmet } from 'react-helmet-async'
@@ -12,6 +11,7 @@ import LoadingBox from '../../components/loading-box/loading-box.component'
 import MessageBox from '../../components/message-box/message-box.component'
 import { Store } from '../../context/store.context'
 import { getError } from '../../utils/errors.utils'
+import ListGroup from 'react-bootstrap/ListGroup'
 
 
 
@@ -83,11 +83,40 @@ const ProductEditScreen = ()=> {
   const [slug, setSlug] = useState("");
   const [price, setPrice] = useState('');
   const [image, setImage] = useState('');
+  const [images, setImages] = useState([]);
   const [category, setCategory] = useState("");
   const [countInStock, setCountInStock] = useState("");
   const [brand, setBrand] = useState("");
   const [description, setDescription] = useState("");
   
+
+  useEffect(()=>{
+    const fetchData = async ()=>{
+      dispatch({type:"FETCH_REQUEST" })
+      try {
+        const { data } = await axios.get(`/api/products/${productId}`);
+
+        // console.log(data)
+        //setting the  empty fields with data
+        setName(data.name);
+        setSlug(data.slug);
+        setPrice(data.price);
+        setImage(data.image);
+        setImages(data.images);
+        setCategory(data.category);
+        setCountInStock(data.countInStock);
+        setBrand(data.brand);
+        setDescription(data.description);
+        dispatch({type:"FETCH_SUCCESS"})
+        
+      } catch (err) {
+        dispatch({type:"FETCH_FAIL", payload: getError(err) })
+      }
+        
+    }
+    fetchData()
+  },[productId]);
+
 
   const submitHandler = async (e)=>{
     e.preventDefault();
@@ -101,6 +130,7 @@ const ProductEditScreen = ()=> {
           slug,
           price,
           image,
+          images,
           category,
           brand,
           countInStock,
@@ -121,7 +151,7 @@ const ProductEditScreen = ()=> {
 
   }
 
-  const uploadFileHandler =async (e)=>{
+  const uploadFileHandler =async (e, additinalImages)=>{
     const file = e.target.files[0];
     const bodyFormData = new FormData();
     bodyFormData.append("file", file);
@@ -134,40 +164,28 @@ const ProductEditScreen = ()=> {
         },
       })
       dispatch({type:"UPLOAD_SUCCESS" });
-      toast.success("Image Uploaded successfull");
-      setImage(data.secure_url)
-
+      if(additinalImages){
+        setImages([...images, data.secure_url]);
+      } else{
+        setImage(data.secure_url)
+      }
+      toast.success("Image uploaded, click update to appy changes")
     } catch (err) {
       dispatch({type:"UPLOAD_FAIL" });
       toast.error(getError(err));
     }
 
   }
-  useEffect(()=>{
-    const fetchData = async ()=>{
-      dispatch({type:"FETCH_REQUEST" })
-      try {
-        const { data } = await axios.get(`/api/products/${productId}`);
 
-        // console.log(data)
-        //setting the  empty fields with data
-        setName(data.name);
-        setSlug(data.slug);
-        setPrice(data.price);
-        setImage(data.image);
-        setCategory(data.category);
-        setCountInStock(data.countInStock);
-        setBrand(data.brand);
-        setDescription(data.description);
-        dispatch({type:"FETCH_SUCCESS"})
-        
-      } catch (err) {
-        dispatch({type:"FETCH_FAIL", payload: getError(err) })
-      }
-        
-    }
-    fetchData()
-  },[productId]);
+  const deleteFileHandler = (imageFileName) =>{
+    console.log(images)
+    console.log(images.filter((x)=> x !== imageFileName));
+
+    //delete through filter
+    setImages(images.filter((x)=> x !== imageFileName));
+    toast.success("Image Deleted, click update to appy changes")
+  }
+  
   return (
     <Container className="small-container">
         <Helmet>
@@ -202,13 +220,34 @@ const ProductEditScreen = ()=> {
 
           <Form.Group className="mb-3" controlId="imageFile">
             <Form.Label>Upload Image</Form.Label>
-            <Form.Control type="file"   onChange={uploadFileHandler}  required  />
+            <Form.Control type="file"   onChange={uploadFileHandler}   />
+            {loadingUpload && <LoadingBox />}
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="additionalImage">
+            <Form.Label>Additional Images</Form.Label>
+            {images.length === 0 &&  <MessageBox>No additional Image(s)</MessageBox>}
+            <ListGroup variant="flush">
+              {images.map((x)=>(
+                <ListGroup.Item key={x}>
+                  {x} 
+                  <Button variant="danger" onClick={()=> deleteFileHandler(x)}>
+                    <i className="fa fa-times-circle"></i>
+                 </Button>
+                </ListGroup.Item>
+              ))}
+            </ListGroup>
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="additionalImage">
+            <Form.Label>Upload Additional Images</Form.Label>
+            <Form.Control type="file" onChange={(e)=>uploadFileHandler(e, true)}/>
             {loadingUpload && <LoadingBox />}
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="category">
             <Form.Label>Category</Form.Label>
-            <Form.Control value={category} Change={(e) => setCategory(e.target.value)} required />
+            <Form.Control value={category} onChange={(e) => setCategory(e.target.value)} required />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="brand">
