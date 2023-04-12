@@ -109,8 +109,20 @@ const  OrderReview = ()=> {
                   <Card.Body>
                      <Card.Title>Shipping</Card.Title>
                         <Card.Text>
-                            <strong>Name</strong>: {userInfo.name} <br/>
-                            <strong>Address</strong>: {shippingAddress.fullName}, {shippingAddress.address}, {shippingAddress.city}, {shippingAddress.country},
+                            <strong>Name</strong>: {shippingAddress.fullName} <br/>
+                            <strong>Address</strong>: {shippingAddress.address}, 
+                            {shippingAddress.city}, {shippingAddress.postalCode}  
+                            , {shippingAddress.country}
+                            &nbsp;
+
+                            {shippingAddress.location && shippingAddress.location.lat &&(
+                                <a
+                                target="_new"
+                                href={`https://maps.google.com?q=${shippingAddress.location.lat},${shippingAddress.location.lng}`}
+                              >
+                                Show On Map
+                              </a>
+                            )}
                         </Card.Text>
                         <Link to='/shipping' variant='link'>Edit</Link>
                   </Card.Body>

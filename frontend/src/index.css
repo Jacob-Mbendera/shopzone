@@ -40,6 +40,14 @@ main {
   max-width: 600px;
 }
 
+
+/* Buttons */
+.updateButton{
+  background-color: #2596be
+  ;
+}
+
+
 /* side bar */
 .navbar-brand{
   font-weight: bold;
@@ -62,4 +70,52 @@ main {
 
 .active-nav{
   left: 0; /*making the side bar actve(to show) */
+}
+
+
+/* M A P */
+.full-box {
+  height: 100vh;
+  max-width: initial; /* make thepage full  screen */
+}
+
+/* hide header and footer  */
+.full-box header,
+.full-box footer {
+  display: none;
+}
+.full-box .container {
+  height: 100vh;
+  max-width: initial;
+  margin: 0;
+  padding: 0;
+}
+
+
+/* when in ful  box reset mt-3 to 0 */
+.full-box .mt-3 {
+  margin-top: 0 !important;
+}
+
+/* search box above the map  */
+.map-input-box {
+  box-sizing: border-box;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0.5rem auto;
+  width: 25rem;
+  height: 3rem;
+  display: flex;
+}
+.map-input-box input {
+  border-radius: 1rem 0 0 1rem;
+  border-right: 0;
+}
+.map-input-box button {
+  border-radius: 0 1rem 1rem 0;
+  border-left: 0;
+}
+button.thumbnail{
+  padding: 0;
 }

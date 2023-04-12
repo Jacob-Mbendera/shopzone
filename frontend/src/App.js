@@ -26,12 +26,21 @@ import axios from 'axios';
 import { getError } from './utils/errors.utils';
 import SearchBox from './components/search-box/search-box';
 import SearchScreen from './screens/search-screen/search-screen';
+import ProtectedRoute from './components/protected-route/protected-route.component';
+import AdminRoute from './components/admin-route/admin-route.component';
+import DashboardScreen from './screens/dashboard/dashboard-screen';
+import ProductList from './screens/product-list-screen/product-list-screen';
+import ProductEditScreen from './screens/product-edit-screen/product-edit-screen';
+import OrderListScreen from './screens/order-list-screen/order-list-screen';
+import UserListScreen from './screens/user-list-screen/user-list-screen';
+import UserEditScreen from './screens/edit-user/edit-user';
+import MapScreen from './screens/map-screen/map-screen';
 
 function App() {
 
 
   const {state, dispatch: ctxDispatch} = useContext(Store);
-  const {cart, userInfo} = state;
+  const {cart, userInfo, fullBox} = state;
 
 const signoutHandler = () =>{
   try{
@@ -62,7 +71,17 @@ useEffect(()=>{
 },[])
 return (
     <BrowserRouter>
-      <div className={   sideBarIsOpen ? "d-flex flex-column site-container active-container" : "d-flex flex-column site-container"}>
+      <div className={   sideBarIsOpen ? //side bar open ?
+          fullBox ? //full box true ?
+          "d-flex flex-column site-container active-container full-box" : 
+          //full box false return 
+          "d-flex flex-column site-container active-container" 
+          
+          : //side bar closed ?
+            fullBox ? //full box true ?
+              "d-flex flex-column site-container full-box":
+              //full box false return 
+              "d-flex flex-column site-container"}>
         <ToastContainer position="top-right" limit={1} />
         <header> 
           <Navbar bg="dark" variant="dark" expand="lg">
@@ -108,6 +127,26 @@ return (
 
 
                     )}
+
+                    {
+                      userInfo && userInfo.isAdmin &&(
+                        <NavDropdown title="Admin" id="admin-nav-drowdown">
+                          <LinkContainer to="/admin/dashboard">
+                            <NavDropdown.Item>Dashboard</NavDropdown.Item>
+                          </LinkContainer>
+                          <LinkContainer to="/admin/products">
+                            <NavDropdown.Item>Products</NavDropdown.Item>
+                          </LinkContainer>
+                          <LinkContainer to="/admin/orders">
+                            <NavDropdown.Item>orders</NavDropdown.Item>
+                          </LinkContainer>
+                          <LinkContainer to="/admin/users">
+                            <NavDropdown.Item>Users</NavDropdown.Item>
+                          </LinkContainer>
+                        </NavDropdown>
+                      )
+                    }
+                    
                 </Nav>
               </Navbar.Collapse>
             </Container>
@@ -122,7 +161,7 @@ return (
                 
                 categories.map((category) =>(
                   <Nav.Item key={category}>
-                    <LinkContainer to={`/search?category=${category}`} onClick={()=> setSideBarIsOpen(false)}>
+                    <LinkContainer to={{pathname: '/search', search:`category=${category}`}} onClick={()=> setSideBarIsOpen(false)}>
                       <Nav.Link>{category}</Nav.Link>
                     </LinkContainer>
                   </Nav.Item>
@@ -133,18 +172,33 @@ return (
         <main> 
           <Container className='d-flex flex-column site-container mt-3'>
             <Routes>
+              <Route path='/' element ={ <HomeScreen />} /> 
               <Route path='/product/:slug' element={ <ProductScreen />} /> 
-              <Route path='/' element ={ <HomeScreen />} />
               <Route path='/cart' element={<CartScreen />} />
               <Route path='/signin' element={<SigninScreen />} />
               <Route path='/signup' element={<SignupScreen />} />
               <Route path='/shipping' element={<ShippingScreen />} />
               <Route path='/payment' element={<PaymentMethod />} />
               <Route path='/order' element={<OrderReview />} />
-              <Route path='/order/:id' element={<OrderScreen />} />
-              <Route path='/orderhistory' element={<OrderHistory />} />
-              <Route path='/profile' element={<UserProfile/>} />
               <Route path='/search' element={<SearchScreen />} />
+              <Route path='/map' element={<MapScreen />} />
+              
+              {/* Protected Routes */}
+              <Route path='/order/:id' element={  <ProtectedRoute> <OrderScreen /> </ProtectedRoute>} />
+              <Route path='/orderhistory' element={ <ProtectedRoute> <OrderHistory /> </ProtectedRoute>} />
+              <Route path='/profile' element={
+                <ProtectedRoute> <UserProfile/> </ProtectedRoute>
+              } />
+
+
+              {/* Admin Routes */}
+              <Route path="/admin/dashboard" element={ <AdminRoute> <DashboardScreen /> </AdminRoute> } />
+              <Route path="/admin/products" element={ <AdminRoute> <ProductList /> </AdminRoute> } />
+              <Route path="/admin/products/:id" element={ <AdminRoute> <ProductEditScreen /> </AdminRoute> } />
+              <Route path="/admin/orders" element={ <AdminRoute> <OrderListScreen /> </AdminRoute> }/>
+              <Route path="/admin/users" element={ <AdminRoute> <UserListScreen /> </AdminRoute> }/>
+              <Route path="/admin/user/:id" element={ <AdminRoute> <UserEditScreen /> </AdminRoute> }/>
+
             </Routes> 
           </Container>
         </main>

@@ -6,12 +6,13 @@ const initialState = {
     cart: {
 
         cartItems: localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')): [],
-        shippingAddress:localStorage.getItem('shippingAddress') ? JSON.parse(localStorage.getItem('shippingAddress')) :{},
+        shippingAddress:localStorage.getItem('shippingAddress') ? JSON.parse(localStorage.getItem('shippingAddress')) :{ location:{} },
         paymentMethod:localStorage.getItem('paymentMethod') ? localStorage.getItem('paymentMethod') :''
 
     },
 
     userInfo: localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : null,
+    fullBox: false,
 }
 
 const reducer = (state, action)=>{
@@ -71,6 +72,17 @@ const reducer = (state, action)=>{
                 }
 
             }
+        case 'SAVE_SHIPPING_ADDRESS_MAP_LOCATION':
+            return {
+                ...state,
+                cart: {
+                ...state.cart,
+                shippingAddress: {
+                    ...state.cart.shippingAddress,
+                    location: action.payload,
+                },
+                },
+            };
 
         case 'SAVE_PAYMENT_METHOD':
             return{
@@ -89,6 +101,13 @@ const reducer = (state, action)=>{
                     cartItems: [],
                 }
             }
+
+        case 'SET_FULLBOX_ON':
+            return{ ...state, fullBox: true}
+
+        case 'SET_FULLBOX_OFF':
+            return{ ...state, fullBox: false}
+            
 
         default:
             return state;

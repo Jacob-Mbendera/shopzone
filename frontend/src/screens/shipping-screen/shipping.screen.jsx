@@ -1,4 +1,4 @@
-import './shipping.screen.styles.scss';
+import './shipping-screen.styles.scss';
 import React, { useContext, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async';
 import  Form from 'react-bootstrap/Form';
@@ -16,6 +16,7 @@ import CheckoutSteps from '../../components/checkout-steps/checkout-steps.compon
         userInfo,
         cart: 
         {shippingAddress},
+        fullBox,
 
     } = state;
 
@@ -36,7 +37,8 @@ import CheckoutSteps from '../../components/checkout-steps/checkout-steps.compon
                 address,
                 city,
                 postalCode,
-                country
+                country,
+                location: shippingAddress.location,
             }
         });
 
@@ -45,19 +47,17 @@ import CheckoutSteps from '../../components/checkout-steps/checkout-steps.compon
                 address,
                 city,
                 postalCode,
-                country
+                country, 
+                location: shippingAddress.location,
         }));
         navigate('/payment');
      }
         
 
      useEffect(()=>{
-        if(!userInfo){
-            // ctxDispatch({type:'SIGN_OUT'});
-            navigate('/signin');
-        }
+        ctxDispatch({type: "SET_FULLBOX_OFF"});
 
-     }, [navigate,userInfo])
+     }, [ctxDispatch,fullBox])
 
   return (
     <div>
@@ -98,7 +98,20 @@ import CheckoutSteps from '../../components/checkout-steps/checkout-steps.compon
         </Form.Group>
 
         <div className='mb-3'>
-            <Button type='submit' variant='dark'>Proceed</Button>
+            <Button id="chooseLocationMap" type="button" className="mapButton" onClick={()=> navigate("/map")}>Find on Map</Button>
+            {
+                shippingAddress.location && shippingAddress.location.lat ? (
+                    <div>
+                        LAT: {shippingAddress.location.lat}
+                        LNG: {shippingAddress.location.lng}
+                    </div>
+                ) : (
+                    <div>No Location</div>
+                )
+            }
+        </div>
+        <div className='mb-3'>
+            <Button  type="submit" variant="dark">Proceed</Button>
         </div>
 
     </Form>
