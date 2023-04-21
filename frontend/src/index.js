@@ -5,22 +5,21 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {HelmetProvider} from 'react-helmet-async';
-import { StoreProvider } from './context/store.context';
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
+import {Provider} from 'react-redux';
+import store from './store/store';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+  <Provider store={store}>
   <React.StrictMode>
-
-    <StoreProvider>
       <HelmetProvider>
          <PayPalScriptProvider deferLoading={true}> {/* set deferLoading to true; we dont want to load Paypay at the beggining */}
-           <App />
-        </PayPalScriptProvider>
-      </HelmetProvider>
-    </StoreProvider>
-
-  </React.StrictMode>
+            <App />
+          </PayPalScriptProvider>
+        </HelmetProvider>
+    </React.StrictMode>
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function
