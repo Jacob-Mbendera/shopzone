@@ -1,23 +1,25 @@
 import React from "react";
-import { useEffect } from "react";
-import { useState } from "react";
-import { Link } from "react-router-dom";
-// import data from '../../data/data';
-import axios from 'axios';
-import { useReducer } from "react";
+import { useEffect } from "react"
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Product from "../../components/product/product.component";
 import {Helmet} from 'react-helmet-async';
-import data from '../../data/data.js'
+import { useDispatch, useSelector } from "react-redux";
+import { listProducts } from "../../store/actions/product.actions";
+import LoadingBox from "../../components/loading-box/loading-box.component";
+import MessageBox from "../../components/message-box/message-box.component";
 
 
 
 const HomeScreen  = ()=>{
+  const dispatch = useDispatch();
+  const productList = useSelector(state => state.productList)
+  const{products, loading, error } = productList;
+  
 
-  useEffect( ()=>{
-
-  },[])
+  useEffect(()=>{
+    dispatch(listProducts())
+  },[dispatch])
 
     return (
         <div> 
@@ -26,13 +28,17 @@ const HomeScreen  = ()=>{
           </Helmet>
             <h1>Featured Products</h1>
           <div className="products">
+            {loading ? (<LoadingBox />) : 
+            error ? ( <MessageBox variant="danger" >{error}</MessageBox>) :
+            (
             <Row>
-                { data.products.map((product) => (
+                { products.map((product) => (
                   <Col key={product.slug} sm={6} md ={4} lg={3} className="mb-3">
                       <Product product={product} />
                     </Col>
                   ))}
             </Row>
+            )}
           </div>
           
       </div>

@@ -62,10 +62,6 @@ switch(action.type){
 }
 
 
-
-
-
-
  function ProductScreen () {
     const params  = useParams();
     const {slug} = params;
