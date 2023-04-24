@@ -7,36 +7,27 @@ import Col from'react-bootstrap/Col';
 import Button from'react-bootstrap/Button';
 import ListGroup from'react-bootstrap/ListGroup';
 import MessageBox from '../../components/message-box/message-box.component';
-import {Link, useNavigate} from 'react-router-dom'
+import {Link, useLocation, useNavigate, useParams} from 'react-router-dom'
 import Card from 'react-bootstrap/Card';
 import axios from 'axios';
 
 const CartScreen = () =>{
+    const params = useParams();
+   const {slug} = params;
 
-    const {state, dispatch: ctxDispatch} = useContext(Store);
-    //object destr 
-    const { cart: { cartItems, } } = state;
-    const navigate = useNavigate();
-    
+  const {search} = useLocation();
+  const searchParams = new URLSearchParams(search);
+  const qty = Number(searchParams.get("qty")) || 1 ;
+
 const updateCartHandler = async (item,quantity) => {
-
-    const { data } = await axios.get(`/api/products/${item._id}`);
-
-    if(data.countInStock < quantity){
-      window.alert('Sorry, Product is out of stock');
-      return;
-    }
-
-    ctxDispatch({ type: 'ADD_CART_ITEM', payload: {...item, quantity}})
 
 }
 
 const removeCartItem = (item) =>{
-    ctxDispatch({ type: 'REMOVE_CART_ITEM', payload: item})
 }
 
 const goToCheckoutHandler = () =>{
-    navigate('/signin?redirect=/shipping'); // in the signin screen, we check for user authentication, if authemticated(signedin)  redirect user to shipping
+  
 }
     return(
         <div>
@@ -44,8 +35,8 @@ const goToCheckoutHandler = () =>{
             <Helmet>
                 <title>My Cart</title>
             </Helmet>
-
-            <Row>
+        <p>Slug: {slug} and Qty: {qty}</p>
+            {/* <Row>
                 <Col md={8}>
 
                     { cartItems.length === 0 ?(
@@ -117,7 +108,7 @@ const goToCheckoutHandler = () =>{
                         </Card.Body>
                     </Card>
                 </Col>
-            </Row>
+            </Row> */}
 
         </div>
     )

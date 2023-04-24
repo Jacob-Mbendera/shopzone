@@ -14,8 +14,7 @@ import MessageBox from "../../components/message-box/message-box.component";
 const HomeScreen  = ()=>{
   const dispatch = useDispatch();
   const productList = useSelector(state => state.productList)
-  const{products, loading, error } = productList;
-  
+  const{products, loading, error } = productList; 
 
   useEffect(()=>{
     dispatch(listProducts())

@@ -1,19 +1,45 @@
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+   margin: 0;
+  height: 100vh;
+  font-size: 1rem;
+  font-family: SF Pro Display,Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 
-main {
-  flex: 1;
+/* Common */
+header{
+  font-size: 14px;;
 }
 
-.text-bold{
-  font-weight: bold;
+
+h1 {
+  font-size: 1.6rem;
+  padding: 1rem 0;
+}
+h2 {
+  font-size: 1.4rem;
+  padding: 1rem 0;
+}
+
+
+input,
+select,
+textarea,
+button {
+  padding: 0.5rem;
+  border-radius: 1rem;
+  border: 0.1rem #a4a4a4 solid;
+  font-size: 1.2rem;
+
+}
+
+input:hover,
+select:hover,
+textarea:hover,
+button:hover {
+
 }
 
 .products {

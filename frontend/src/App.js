@@ -5,12 +5,11 @@ import ProductScreen from './screens/product-screen/product.screen';
 import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
 import {LinkContainer} from 'react-router-bootstrap';
-import Badge from 'react-bootstrap/esm/Badge';
 import Nav from 'react-bootstrap/Nav';
-import { useContext, useEffect, useState } from 'react';
-import 'react-toastify/dist/ReactToastify.css';
+import { useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import SearchBox from './components/search-box/search-box';
+import CartScreen from './screens/cart-screen/cart.screen';
 
 function App() {
 useEffect(()=>{
@@ -45,8 +44,8 @@ return (
           <Container className='d-flex flex-column site-container mt-3'>
             <Routes>
               <Route path='/' element ={ <HomeScreen />} /> 
-              {/* <Route path='/product/:slug' element={ <ProductScreen />} />  */}
-
+              <Route path='/product/:slug' element={ <ProductScreen />} /> 
+              <Route path='/cart/:slug?' element={ <CartScreen />} /> 
             </Routes> 
           </Container>
         </main>
