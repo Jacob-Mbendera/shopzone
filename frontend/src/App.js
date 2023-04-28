@@ -10,8 +10,13 @@ import { useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import SearchBox from './components/search-box/search-box';
 import CartScreen from './screens/cart-screen/cart.screen';
+import  Badge from 'react-bootstrap/Badge';
+import { useSelector } from 'react-redux';
 
 function App() {
+
+  const cart = useSelector(state => state.cart);
+
 useEffect(()=>{
 },[])
 return (
@@ -28,9 +33,16 @@ return (
                   <Navbar.Collapse id="basic-navbar-nav" >
                     <SearchBox />
                   <Nav className="me-auto w-100 justify-content-end">
-                  <Link to="cart" className='nav-link'>
-                    Cart
-                  </Link>
+
+                      <Link to={"/cart"} className='nav-link'>
+                        Cart{
+                          cart.cartItems.length > 0  &&(
+                            <Badge pill bg="danger">
+                                {cart.cartItems.reduce((accum,currItem) => accum + currItem.qty, 0)}
+                            </Badge>
+                          )
+                        }
+                      </Link>
                       <Link to={'/signin'} className="nav-link">
                           Sign In
                       </Link>
