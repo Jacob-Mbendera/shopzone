@@ -15,12 +15,12 @@ export const  listProducts = () => async(dispatch)=>{
 
 
 
-export const showProductDetails= (slug) => async(dispatch) =>{
+export const showProductDetails= (productId) => async(dispatch) =>{
 
-    dispatch({type: PRODUCT_DETAILS_ACTION_TYPES.FETCH_REQUEST, payload: slug})
+    dispatch({type: PRODUCT_DETAILS_ACTION_TYPES.FETCH_REQUEST, payload: productId})
    
     try {
-        const { data } = await Axios.get(`/api/products/slug/${slug}`) 
+        const { data } = await Axios.get(`/api/products/${productId}`) 
         dispatch({type: PRODUCT_DETAILS_ACTION_TYPES.FETCH_SUCCESS, payload: data})
     } catch (err) {
         dispatch({type: PRODUCT_DETAILS_ACTION_TYPES.FETCH_FAIL, payload: getError(err) })

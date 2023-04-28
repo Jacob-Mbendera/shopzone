@@ -44,8 +44,8 @@ return (
           <Container className='d-flex flex-column site-container mt-3'>
             <Routes>
               <Route path='/' element ={ <HomeScreen />} /> 
-              <Route path='/product/:slug' element={ <ProductScreen />} /> 
-              <Route path='/cart/:slug?' element={ <CartScreen />} /> 
+              <Route path='/product/:id' element={ <ProductScreen />} /> 
+              <Route path='/cart/:productId?' element={ <CartScreen />} /> 
             </Routes> 
           </Container>
         </main>

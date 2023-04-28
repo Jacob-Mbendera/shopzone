@@ -18,7 +18,7 @@ import { useNavigate, useParams } from 'react-router-dom';
  const ProductScreen = (props)=> {
     const dispatch = useDispatch();
     const params = useParams();
-    const {slug} = params;
+    const {id} = params;
     const productDetails = useSelector(state => state.productDetails)
     const { loading, error, product } = productDetails;
     
@@ -26,11 +26,13 @@ import { useNavigate, useParams } from 'react-router-dom';
     const navigate = useNavigate();    
   
   const addToCartHandler = ()=>{
-    navigate(`/cart/${slug}?qty=${qty}`)
-  }
-  useEffect( ()=>{
-    dispatch(showProductDetails(slug))
-  },[slug, dispatch ]) 
+    navigate(`/cart/${product._id}?qty=${qty}`)
+}
+
+
+useEffect( ()=>{
+    dispatch(showProductDetails(id))
+  },[id, dispatch ]) 
 
   return loading ? ( 
       <LoadingBox />

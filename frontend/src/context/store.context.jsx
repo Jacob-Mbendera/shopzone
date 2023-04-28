@@ -23,7 +23,7 @@ const reducer = (state, action)=>{
             const newCartItem = action.payload;
             const existCartItem = state.cart.cartItems.find( (item) => 
                 item._id === newCartItem._id);
-                    //cartItem  = existing items  ?                               update newCartItem  with item;existing item                :  else  add it to cartItems
+                    //cartItem  = existing items  ?                               update existing item with newCartItem              :  else  add new item to cartItems
                 const cartItems =  existCartItem ? state.cart.cartItems.map( (item) => item._id ===  existCartItem._id ? newCartItem : item) : [...state.cart.cartItems, newCartItem]
                 //if we already have the item in the cart, we need to use map() function on cartItems to UPDATE the newCartItem with the already existing cart item(item) to avoid creating duplicates
                 //if existCartItem is null it means its new item so we need to add it to the end of the Array hence [...state.cart.cartItems, newCartItem]

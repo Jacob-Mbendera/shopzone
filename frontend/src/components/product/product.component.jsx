@@ -8,12 +8,12 @@ const Product = (props) => {
     const {product} = props;
     return(
     <Card>
-        <Link to={`/product/${product.slug}`}>
+        <Link to={`/product/${product._id}`}>
         <img src={product.image} alt={product.slug}  className="card-img-top"/>
         </Link>
 
         <Card.Body>
-            <Link to={`/product/${product.slug}`}>
+            <Link to={`/product/${product._id}`}>
                 <Card.Title> {product.name}</Card.Title>
             </Link>
             <Rating rating={product.rating} numReviews={product.numReviews} />
