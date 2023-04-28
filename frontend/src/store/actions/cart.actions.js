@@ -14,7 +14,10 @@ export const  addToCart = (productId, qty) => async(dispatch, getState) =>{
             countInStock: data.countInStock,
             product: data._id,
             qty,
-        }
-    })
+        },
+
+    });
+    //setting the carttItems in local storage; making it persistent so refreshing the page wont clart the cart
+    localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
 
 }
